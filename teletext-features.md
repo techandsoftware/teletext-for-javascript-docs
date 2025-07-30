@@ -13,9 +13,9 @@ See also these modules:
 
 ## Teletext features supported
 
-Teletext is a technical standard for showing pages of text and semigraphics on TV screens, devised in 1976 by the BBC and IBA. The spec for the most recent version is [ETSI EN 300 706](https://www.etsi.org/deliver/etsi_en/300700_300799/300706/01.02.01_60/en_300706v010201p.pdf). It's still used in Europe, where it's used for broadcast TV. Its cousins are Viewdata and Minitel. UK broadcast subtitles still use the 7-bit character set defined by teletext.
+[Teletext](https://en.wikipedia.org/wiki/Teletext) is a technical standard for showing pages of text and semigraphics on TV screens, devised in 1976 by the BBC and IBA. The spec for the most recent version is [ETSI EN 300 706](https://www.etsi.org/deliver/etsi_en/300700_300799/300706/01.02.01_60/en_300706v010201p.pdf). It's still used in Europe, where it's used for broadcast TV. Its a cousin of [Viewdata](https://en.wikipedia.org/wiki/Viewdata). UK broadcast subtitles still use the 7-bit character set defined by teletext despite newer systems being availble.
 
-* Level 1
+* **Level 1**
 
     * Screen size of 40 x 25 characters
     * 6 colour foreground text or mosaic characters (also called [semigraphics](https://en.wikipedia.org/wiki/Semigraphics) or [sextants](https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing))
@@ -28,7 +28,7 @@ Teletext is a technical standard for showing pages of text and semigraphics on T
     * Held mosaic characters, to replace the display of a spacing attributes with the last held graphic
     * Newsflash / subtitles page display mode
     * Mix display mode, which isn't part of the teletext spec but is normal on TVs
-* Level 1.5
+* **Level 1.5**
     * Black foreground text or mosaic (this is level 2.5 in the teletext spec but included here at 1.5 as with some TVs)
     * G2 character set selectable from 4 available sets (Latin, Greek, Cyrillic and Arabic)
     * Add enhancements to the base page at (row, col) locations:
@@ -37,17 +37,17 @@ Teletext is a technical standard for showing pages of text and semigraphics on T
        * Place characters from the G2 sets
        * Place `@` symbol (it isn't in most G0 sets or the G2 sets)
        * 4 characters from the G3 character set placeable
-* Level 2.5
+* **Level 2.5**
     * Double width and double size characters
     * Add enhancements to base page at (row, col) locations:
       * Place characters from the G1 set (block mosaics)
       * Place characters from the G3 set (smooth mosaics and line drawing)
 
-Additional features:
+**Additional features of this module:**
 
 * API to draw text and graphics on the screen
 * Screen is rendered with SVG graphics. The SVG is exportable for display in any SVG viewer without needing Javascript, and is fully scalable to any resolution
-* The API supports setting the font for text, change the height and aspect ratio, switch teletext levels, and set on-screen grid
+* The API supports setting the font for text, change the height and aspect ratio, switch teletext levels, and set an on-screen grid
 * Use characters or SVG shapes for rendering mosaics
 * Plugin architecture. Plugins can supplement or overwrite the rendering
 
