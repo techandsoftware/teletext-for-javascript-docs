@@ -1,0 +1,9 @@
+.VPHomeHero {
+  min-height: 100vh;   /* full viewport height */
+  display: flex;       /* optional, for vertical centering */
+  flex-direction: column;
+  background-image: url('/assets/home-background.png');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

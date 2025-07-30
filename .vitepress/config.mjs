@@ -2,8 +2,8 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Teletext modules for Javascript",
-  description: "Docs and demos for @techandsoftware/teletext and related modules",
+  title: "Teletext for JS",
+  description: "@techandsoftware/teletext and related modules",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
