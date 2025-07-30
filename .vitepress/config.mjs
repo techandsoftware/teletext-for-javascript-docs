@@ -26,9 +26,9 @@ export default defineConfig({
       {
         text: 'Demos',
         items: [
-          { text: 'Demo 1', link: '/teletext-demos' },
-          { text: 'Demo 2', link: '/teletext-demo2' },
-          { text: 'Demo 3', link: '/TODO' },
+          { text: 'Overview', link: '/demos/' },
+          { text: 'Base page', link: '/demos/2-base-page' },
+          { text: 'Graphics', link: '/demos/3-graphics' },
         ]
       }
     ],

@@ -3,7 +3,7 @@
 <TeletextScreen @ready="runDemo"/>
 
 <script setup>
-  import TeletextScreen from './components/TeletextScreen.vue';
+  import TeletextScreen from '../components/TeletextScreen.vue';
   // todo import this globally
 
   function runDemo(t) {

@@ -95,7 +95,7 @@ Sets the G2 character set. This can be called to override the G2 set that was se
 
 `withUpdate` is an optional boolean. When `true` the display is updated immediately. Defaults to `false`.
 
-## Write to the base page
+## Write rows to the base page
 
 ### setPageRows([strings])
 
@@ -132,9 +132,11 @@ In this:
 
 ## Write bytes to the base page
 
+These methods let you set the column as well as the row.
+
 ### writeBytes(colNum, rowNum, [lines])
 
-Writes each line in the array to the screen starting from `colNum`, `rowNum`.  This allows you to place a block of text on the screen without affecting existing characters. `colNum` is from 0 to 39, `rowNum` from 0 to 24.
+Writes each line in the array to the screen starting from `colNum`, `rowNum`.  This allows you to place a block of text on the screen without affecting preceding columns. `colNum` is from 0 to 39, `rowNum` from 0 to 24.
 
 ### writeByte(colNum, rowNum, byte, withUpdate)
 
@@ -144,13 +146,15 @@ Writes the byte to the `colNum`, `rowNum`.  `colNum` is from 0 to 39, `rowNum` f
 
 ## Plot pixel graphics
 
+The mosaic graphics set (G1) uses characters with 6 pixels. The `plot` and `plotPoints` methods allow you draw individual pixels and the required characters will be calculated.
+
 ### plot(graphicColNum, graphicRowNum)
 
 Plots a pixel. The coordinates are from (0, 0) to (79, 74). The origin is the top-left. Note this uses a different coordinate scheme than methods like `writeBytes()`, which refer to the character cell rows and columns. For performance, there is no range checking, so the display will crash if you try to plot outside of the range. The page display is not updated. You can force an update with `updateDisplay()`.
 
 This generates a 2x3 mosaic (sextant) character corresponding to the character cell in the page model that you're plotting to. Existing mosaics in the cell are modified to plot the pixel. If characters with codes 0x0 to 0x1f are in the target cell, these are unchanged so that spacing atributes are preserved, and the plot has no effect. If characters with codes 0x40 to 0x5f are at the character position you're plotting to, this is cleared first.
 
-To use this, you will first need to set graphics mode for the text row by writing a graphic spacing attribute, for example by using `writeByte()` and `Attributes.charfromGraphicColour(colour)`.
+To use this, you will first need to set graphics mode for the row by writing a graphic spacing attribute, for example by using `writeByte()` and `Attributes.charfromGraphicColour(colour)`.
 
 ### plotPoints(graphicColNum, graphicRowNum, numPixelsPerRow, pixelsArray)
 

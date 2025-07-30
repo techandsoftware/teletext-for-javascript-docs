@@ -35,8 +35,8 @@ Gets the code for an attribute. `attribute` is one of these:
 |-------------------------------|------------------------------------|
 | Attributes.NEW_BACKGROUND     | set the background colour to the current foreground colour |
 | Attributes.BLACK_BACKGROUND   | set the background colour to black |
-| Attributes.CONTIGUOUS_GRAPHIC | set the mosaic graphics to contiguous blocks |
-| Attributes.SEPARATED_GRAPHIC  | set the mosaic graphics to separated blocks |
+| Attributes.CONTIGUOUS_GRAPHICS | set the mosaic graphics to contiguous blocks |
+| Attributes.SEPARATED_GRAPHICS  | set the mosaic graphics to separated blocks |
 | Attributes.FLASH              | activate flashing for text/mosaic |
 | Attributes.STEADY             | deactivate flashing for text/mosaic |
 | Attributes.NORMAL_SIZE        | set text/mosaic to normal height |
