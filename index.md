@@ -1,11 +1,8 @@
 ---
 layout: home
 hero:
-  name: JS modules for teletext
-  tagline: \@techandsoftware/teletext and related modules
-  image:
-    src: /logo.pngx
-    alt: 
+  name: Teletext for Javascript
+  tagline: "@techandsoftware/teletext and related modules"
   actions:
     - theme: brand
       text: Get Started

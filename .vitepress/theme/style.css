@@ -1,9 +1,26 @@
-.VPHomeHero {
-  min-height: 100vh;   /* full viewport height */
-  display: flex;       /* optional, for vertical centering */
-  flex-direction: column;
-  background-image: url('/assets/home-background.png');
-  background-position: top;
-  background-repeat: no-repeat;
-  background-size: cover;
+/* home page background image */
+body:has(.is-home) {
+    background-image: url('/assets/home-background.png');
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+html:not(.dark) .tagline {
+  color: #dddddd;
+}
+
+header {
+    background-color: rgb(255 255 255 / 0.5);
+}
+
+/* plus dark mode */
+html.dark body:has(.is-home) {
+    background-color: transparent;
+    background-image: linear-gradient(to bottom, #cc00cc, #00008b), url('/assets/home-background.png');
+    background-blend-mode: multiply;
+}
+
+html.dark header {
+    background-color: rgb(0 0 0 / 0.5);
 }
