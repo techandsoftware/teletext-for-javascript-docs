@@ -2,7 +2,10 @@
 
 ## For browsers
 
-Quickstart:
+
+### Quickstart - using a CDN
+
+This needs no tooling.
 
 ```html
 <div id="teletextscreen"></div>
@@ -16,13 +19,11 @@ Quickstart:
 </script>
 ```
 
-If you want to use npm to install instead of jsdelivr:
+### Using npm
 
-1. Install dependency:
+1. Install dependency: `npm install @techandsoftware/teletext`
 
-`npm install @techandsoftware/teletext`
-
-2. In your HTML, include the following to use an an ES6 module:
+2. In your HTML, include the following to import as an ES6 module:
 
 ```html
 <div id="teletextscreen"></div>
@@ -30,8 +31,7 @@ If you want to use npm to install instead of jsdelivr:
 <script type="module">
   import { Teletext } from './node_modules/@techandsoftware/teletext/dist/teletext.min.js';
 
-  // Or if you import the npm module directly, use the following import instead of the one above.
-  // (You will also need tooling to resolve the module for the browser, like vite.)
+  // Or, use this if you have tooling like vite:
   // import { Teletext } from '@techandsoftware/teletext';
 
   const teletext = Teletext();
@@ -46,11 +46,9 @@ This creates an SVG object in the #teletextscreen div which contains the teletex
 
 Your code needs to pass in a document object model window to the `Teletext()` function.
 
-1. Install dependencies:
+1. Install dependencies: `npm install @techandsoftware/teletext jsdom`
 
-`npm install @techandsoftware/teletext jsdom`
-
-2. Example code if using ECMAScript modules (requires node >= 16)
+2. Example ES6 code (requires node >= 16)
 
 ```javascript
 import { Teletext } from '@techandsoftware/teletext';
@@ -69,4 +67,34 @@ const svg = dom.window.document.querySelector('#teletextscreen').innerHTML;
 
 ## Drawing text
 
+See also: [base page demo](/demos/2-base-page)
+
+```javascript
+teletext.setRow(0, 'This is text using the default attributes');
+teletext.setRow(1, Attributes.charFromTextColour(Colour.GREEN) + 'Green text using an attribute.')
+```
+
+See:
+* [Attributes](/teletext-attributes)
+* [Write rows to the base page](/teletext-screen-api#write-rows-to-the-base-page)
+* [Write bytes to the base page](/teletext-screen-api#write-bytes-to-the-base-page)
+
 ## Drawing graphics
+
+See also: [graphics demo](/demos/3-graphics)
+
+```javascript
+// Draw block mosaic characters in magenta. Codes are for the G1 set
+// Each character has 6 pixels
+teletext.setRow(0),  Attributes.charFromGraphicColour(Colour.MAGENTA) + '\x66\x39';
+
+// Plot an individual pixel
+teletext.plot(7, 1);
+teletext.updateDisplay();
+```
+
+See:
+* [Attributes](/teletext-attributes)
+* [Write rows to the base page](/teletext-screen-api#write-rows-to-the-base-page)
+* [Write bytes to the base page](/teletext-screen-api#write-bytes-to-the-base-page)
+* [Plot pixel graphics](/teletext-screen-api#plot-pixel-graphics)

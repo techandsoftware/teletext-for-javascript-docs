@@ -6,18 +6,27 @@ This supports all of level 1 and level 1.5, and a little of level 2.5.  A full l
 
 Extensions are supported via plugins.
 
-See also these modules:
+See also these packages:
 
-* [@techandsoftware/teletext-service](https://www.npmjs.com/package/@techandsoftware/teletext-service), a higher level module with page numbers, subpage and colour button navigation.
-* @techandsoftware/teletext-caster, Chromecast integration, for displaying teletext on Chromecast and compatible TVs
+* [@techandsoftware/teletext-service](https://www.npmjs.com/package/@techandsoftware/teletext-service), a higher level package with page numbers, subpage and colour button navigation. This can be used as the basis of an application.
+* [@techandsoftware/teletext-caster](https://www.npmjs.com/package/@techandsoftware/teletext-caster), Chromecast integration, for displaying teletext on Chromecast and compatible TVs. This is clearly what Google intended all along.
+* [@techandsoftware/teletext-plugin-smooth-mosaic](https://www.npmjs.com/package/@techandsoftware/teletext-plugin-smooth-mosaic), a plugin which applies a pixel-art scaling algorithm to the block mosaics to create higher resolution graphics. The algorithm used is [hqx](https://en.wikipedia.org/wiki/Hqx_(algorithm)) by Maxim Stepin. The result isn't authentic teletext, but this can create a satisfying result. This is unrelated to the G3 character set in level 2.5, which contains smooth mosaic characters.
+* [@techandsoftware/teletext-fonts](https://www.npmjs.com/package/@techandsoftware/teletext-fonts) is a helper package which contains a couple of fonts equipped with block mosaic characters (sextants). This is optional and unnecessary if rendering the mosaics graphically via `setView()`.
+* [@techandsoftware/image-to-sextants](https://www.npmjs.com/package/@techandsoftware/image-to-sextants) converts an image to Unicode sextant or teletext block mosaic characters.
+
+See also these sites:
+
+* [Geefax](https://geefax.robdev.org.uk) is a web-based teletext service, using content from the Guardian via their API, which demonstrates the packages above.
 
 ## Teletext features supported
 
-[Teletext](https://en.wikipedia.org/wiki/Teletext) is a technical standard for showing pages of text and semigraphics on TV screens, devised in 1976 by the BBC and IBA. The spec for the most recent version is [ETSI EN 300 706](https://www.etsi.org/deliver/etsi_en/300700_300799/300706/01.02.01_60/en_300706v010201p.pdf). It's still used in Europe, where it's used for broadcast TV. Its a cousin of [Viewdata](https://en.wikipedia.org/wiki/Viewdata). UK broadcast subtitles still use the 7-bit character set defined by teletext despite newer systems being availble.
+As a quick intro, [teletext](https://en.wikipedia.org/wiki/Teletext) is a technical standard for showing pages of text and semigraphics on TV screens, devised in 1976 by the BBC and IBA. The spec for the most recent version of World Standard Teletext is [ETSI EN 300 706](https://www.etsi.org/deliver/etsi_en/300700_300799/300706/01.02.01_60/en_300706v010201p.pdf). It's still used in Europe, where it's used for broadcast TV. Its a cousin of [Viewdata](https://en.wikipedia.org/wiki/Viewdata). UK broadcast subtitles still use the 7-bit character set defined by teletext despite newer systems being available.
+
+The levels are for different capabilities, defined in the teletext spec.
 
 * **Level 1**
 
-    * Screen size of 40 x 25 characters
+    * A base page, or screen size of 40 x 25 characters
     * 6 colour foreground text or mosaic characters (also called [semigraphics](https://en.wikipedia.org/wiki/Semigraphics) or [sextants](https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing))
     * 7 colour background
     * Text displayed using the G0 character sets
@@ -56,10 +65,9 @@ See also these modules:
 * [@techandsoftware/teletext-plugin-smooth-mosaic](https://www.npmjs.com/package/@techandsoftware/teletext-plugin-smooth-mosaic) - render smooth mosaic graphics using a pixel art scaling algorithm instead of the usual block mosaics
 
 ## Demos
-
-For a live demo, see https://teletextmoduledemo.robdev.org.uk/
-
-See the `demo` directory in the repo for examples of using with an ES6 module import or a UMD import.
+ 
+* See [demos](/demos/) for several text and graphic demos.
+* See [Geefax](https://geefax.robdev.org.uk/) for a full service in a web app.
 
 ## License
 
@@ -91,9 +99,8 @@ If you encounter any issues, contact techandsoftwareltd@outlook.com
 ## Credits
 
 * Unscii font used for block graphics when `setView` or `enhance().putG3()` is called - http://viznut.fi/unscii/
-* Bedstead font - http://bjh21.me.uk/bedstead/
 * Native font stack adapted from Bootstrap's - https://getbootstrap.com/docs/4.5/content/reboot/#native-font-stack
 * The internal API used for drawing SVG is a subset of svg.js v3 - https://svgjs.dev/docs/3.0/
-* Teletext test pages from https://archive.teletextarchaeologist.org/
+* Teletext test pages from https://teletextarchive.com/
 * The data format for stored test pages and for the `loadPageFromEncodedString` API is from Simon Rawles' teletext editor - https://edit.tf/
 * The Output Line format is taken from MRG's .tti file spec - https://zxnet.co.uk/teletext/documents/ttiformat.pdf
