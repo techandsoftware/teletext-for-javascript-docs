@@ -86,7 +86,7 @@ See also: [graphics demo](/demos/3-graphics)
 ```javascript
 // Draw block mosaic characters in magenta. Codes are for the G1 set
 // Each character has 6 pixels
-teletext.setRow(0),  Attributes.charFromGraphicColour(Colour.MAGENTA) + '\x66\x39';
+teletext.setRow(0, Attributes.charFromGraphicColour(Colour.MAGENTA) + '\x66\x39');
 
 // Plot an individual pixel
 teletext.plot(7, 1);

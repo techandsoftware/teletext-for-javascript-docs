@@ -3,12 +3,12 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Teletext for JS",
-  description: "@techandsoftware/teletext and related modules",
+  description: "@techandsoftware/teletext and related packages",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'Demos', link: '/demos/' }
     ],
 
     sidebar: [
