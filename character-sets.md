@@ -17,7 +17,7 @@ Each set is 7 bit, with up to 96 characters with codes 0x20 to 0x7f.  A descript
 - Used on base page for the text
 - 20 character sets available. See the API docs below for the list.  None of these are ASCII, but `g0_latin` is close.
 - At level 1, primary and secondary G0 set can be selected and used simultaneously
-- At level 1.5,
+- At level 1.5 and 2.5,
   - can be placed using enhancements
   - diacritics can be placed atop G0 characters as enhancements, from 15 available diacritical marks
 
