@@ -30,7 +30,7 @@ To use: See the APIs to write [rows](/teletext-screen-api#write-rows-to-the-base
 - The block mosaics have two types of glyphs, contiguous or separated, defaulting to contiguous
 - At level 2.5, can be placed using enhancements
 
-To use: Use attributes to switch from G0 to G1, e.g. include [`Attributes.charFromGraphicColour(Colour.RED)`](/teletext-attributes#attributes-charfromgraphiccolour-colour) in the string passed to APIs to write [rows](/teletext-screen-api#write-rows-to-the-base-page) or [bytes](/teletext-screen-api#write-bytes-to-the-base-page) to the base page. Use `Attributes.CONTIGUOUS_GRAPHICS` or `Attributes.SEPARATED_GRAPHICS` with [`Attributes.charFromAttribute()`](/teletext-attributes#attributes-charfromattribute-attribute), or the underlying control characters, to control the rendering mode. [`enhance().putG1()`](/teletext-screen-api#putg1-char) writes enhancements.
+To use: Use attributes to switch from G0 to G1, e.g. include [`Attributes.charFromGraphicColour(Colour.RED)`](/teletext-attributes#attributes-charfromgraphiccolour-colour) in the string passed to APIs to write [rows](/teletext-screen-api#write-rows-to-the-base-page) or [bytes](/teletext-screen-api#write-bytes-to-the-base-page) to the base page. Use `Attributes.CONTIGUOUS_GRAPHICS` or `Attributes.SEPARATED_GRAPHICS` with [`Attributes.charFromAttribute()`](/teletext-attributes#attributes-charfromattribute-attribute), or the underlying control characters, to control whether the segments are separated or not. [`enhance().putG1()`](/teletext-screen-api#putg1-char) writes enhancements. Use [`setView()`](/teletext-screen-api#setview-view) to control whether they're rendered with a font or graphical primitives in the display.
 
 ## G2 "Supplementary Sets"
 
