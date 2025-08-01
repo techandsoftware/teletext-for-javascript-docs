@@ -16,7 +16,7 @@ export default defineConfig({
         text: '@techandsoftware/teletext',
         items: [
           { text: 'Features', link: '/teletext-features' },
-          { text: 'Usage', link: '/teletext-usage ' },
+          { text: 'Usage', link: '/teletext-usage' },
           { text: 'Attributes', link: '/teletext-attributes' },
           { text: 'Character sets', link: '/character-sets' },
           { text: 'Screen API', link: '/teletext-screen-api' },
