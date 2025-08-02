@@ -9,6 +9,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@techandsoftware/teletext": "^1.0.0"
+    "@techandsoftware/teletext": "^1.1.0"
   }
 }
