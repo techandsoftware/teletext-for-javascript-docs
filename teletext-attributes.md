@@ -12,7 +12,7 @@ import { Attributes, Colour } from '@techandsoftware/teletext';
 
 Sets text mode for the specified colour. Characters following this are mapped according to the G0 character set.  See below for the colours.
 
-## Attributes.charfromGraphicColour(colour)
+## Attributes.charFromGraphicColour(colour)
 
 Sets graphic mode for the specified colour. Characters following this draw block mosaics from the G1 character set if the character code is 20 to 3f or 60 to 7f; characters 40 to 5f show the character from the G0 set with the same character code.
 

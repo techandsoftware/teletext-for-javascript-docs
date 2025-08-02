@@ -18,7 +18,7 @@ The `options` parameter object is optional, with properties:
    * `false` - uses SVG2 features which work in most browsers but not Safari or any browser on iOS, as they fail to render the graphics properly ([see this bug](https://bugs.webkit.org/show_bug.cgi?id=182172)), unless you use `setView` to switch the view to `classic__font-for-mosaic` (documented below)
 
 * `dom`: object (optional)
-   * if running in nodejs you need to pass in a window dom object. See the example above
+   * if running in nodejs you need to pass in a window dom object. See [this example](/teletext-usage#for-nodejs) for nodejs
 
 Call the following methods on the teletext instance to draw on the screen and control the rendering.
 
@@ -27,7 +27,7 @@ Call the following methods on the teletext instance to draw on the screen and co
 
 `selector` is a DOM selector string, e.g. `#teletextscreen` to match a `<div id="teletextscreen"></div>` element.
 
-This adds a teletext screen to the DOM element referred to by the selector, which will create an inline SVG document to render the screen. If you want to export a snapshot of the SVG, you can access it with `document.querySelector(selector).innerHTML`
+This adds a teletext screen to the DOM element referred to by the selector, which will create an inline SVG document to render the screen. If you want to export a snapshot of the SVG, you can access it with `document.querySelector(selector).innerHTML`. It's necessary to call `addTo()` to make the screen visible.
 
 ### setLevel(level)
 
@@ -76,7 +76,7 @@ Sets the default G0 character set, and the G2 set with the script matching the G
 
 There are four G2 sets available. The G2 set which is selected has the same script passed in as the `charset` (for example, if `charset` is `g0_greek` then G2 is set to `g2_greek`.) Hebrew doesn't have a corresponding G2 set, and G2 is set to `g2_arabic`.
 
-For reference, the code charts are on [Wikipedia](https://en.wikipedia.org/wiki/Teletext_character_set), however the character codepoints there don't necessarily match the tables in this codebase (see `src/data/characterEncodings.json`).  The control codes for characters 0 to 1f are used for attributes - see Attributes.
+For reference, the code charts are on [Wikipedia](https://en.wikipedia.org/wiki/Teletext_character_set), however the character codepoints there don't necessarily match the tables in this codebase (see [`characterEncodings.json`](https://bitbucket.org/rahardy/teletext/src/master/lib/data/characterEncodings.json) in the source).  The control codes for characters 0 to 1f are used for [attributes](/teletext-attributes).
 
 ### setSecondG0Charset(charset, withUpdate)
 
@@ -101,21 +101,21 @@ Sets the G2 character set. This can be called to override the G2 set that was se
 
 Display the content in the strings. Array of up to 25 elements. Each element is a string up to 40 characters. This is used to set the contents of the whole screen.
 
-Display attributes such as text or graphic colour, flashing and other features are set with control codes defined by ETSI EN 300 706. These can be embedded directly in the strings or are exposed via an `Attributes` class to generate them. See the section below. 
+Display attributes such as text or graphic colour, flashing and other features are set with control codes defined by ETSI EN 300 706. These can be embedded directly in the strings or are exposed via the [Attributes](/teletext-attributes) class to generate them. 
 
 ### setRow(rowNum, string)
 
-Display the string on the row number. `rowNum` is between 0 and 24. The string is up to 40 characters.  Display attributes in the string can be used - see the section below.
+Display the string on the row number. `rowNum` is between 0 and 24. The string is up to 40 characters.  Display [attributes](/teletext-attributes) in the string can be used.
 
 ### loadPageFromEncodedString(base64input, header)
 
-Displays a page from the `base64input`.  The input is a base64-encoded string of 7-bit characters for the 25 rows x 40 characters concatenated together. The encoded string uses the character repertoire defined in the [base64url encoding](https://tools.ietf.org/html/rfc4648#section-5). This format is taken from the URL hash fragment format used by Simon Rawles' online edit.tf teletext editor. See further details here: https://github.com/rawles/edit.tf
+Displays a page from the `base64input`.  The input is a base64-encoded string of 7-bit characters for the 25 rows x 40 characters concatenated together. The encoded string uses the character repertoire defined in the [base64url encoding](https://tools.ietf.org/html/rfc4648#section-5). This format is taken from the URL hash fragment format used by Simon Rawles'  [edit.tf](https://edit.tf) teletext editor. See further details on the format here: https://github.com/rawles/edit.tf
 
-`header` is optional. When supplied, it replaces row 0 on the displayed page. It's a string of 32 characters. It can use the Output Line format but without the initial `OL,rowNum,`. See `setPageFromOutputLines` for the format.
+`header` is optional. When supplied, it replaces row 0 on the displayed page. It's a string of 32 characters. It can use the Output Line format but without the initial `OL,rowNum,`. See [`setPageFromOutputLines`](#setpagefromoutputlines-lines-header) for the format.
 
 ### setRowFromOutputLine(rowNum, string)
 
-This is a wrapper around `setRow` which accepts the Output Line format used in .tti files, but without the initial `OL,rowNum,` at the beginning. It displays the string on the row number after decoding the Output Line. See `setPageFromOutputLines` for the format. `rowNum` is between 0 and 24.
+This is a wrapper around `setRow` which accepts the Output Line format used in .tti files, but without the initial `OL,rowNum,` at the beginning. It displays the string on the row number after decoding the Output Line. See [`setPageFromOutputLines`](#setpagefromoutputlines-lines-header) for the format. `rowNum` is between 0 and 24.
 
 ### setPageFromOutputLines([lines], header)
 
@@ -146,58 +146,58 @@ Writes the byte to the `colNum`, `rowNum`.  `colNum` is from 0 to 39, `rowNum` f
 
 ## Plot pixel graphics
 
-The mosaic graphics set (G1) uses characters with 6 pixels. The `plot` and `plotPoints` methods allow you draw individual pixels and the required characters will be calculated.
+The mosaic graphics set (G1) uses characters with 6 pixels. The [`plot()`](#plot-graphiccolnum-graphicrownum) and [`plotPoints()`](#plotpoints-graphiccolnum-graphicrownum-numpixelsperrow-pixelsarray) methods allow you draw individual pixels and the required characters will be derived. You will need to activate graphics mode on each row first using the necessary attribute, using [`Attributes.charFromGraphicColour()`](/teletext-attributes#attributes-charfromgraphiccolour-colour) or the control code character directly.
 
 ### plot(graphicColNum, graphicRowNum)
 
-Plots a pixel. The coordinates are from (0, 0) to (79, 74). The origin is the top-left. Note this uses a different coordinate scheme than methods like `writeBytes()`, which refer to the character cell rows and columns. For performance, there is no range checking, so the display will crash if you try to plot outside of the range. The page display is not updated. You can force an update with `updateDisplay()`.
+Plots a pixel. The coordinates are from (0, 0) to (79, 74). The origin is the top-left. Note this uses a different coordinate scheme than methods like [`writeBytes()`](#writebytes-colnum-rownum-lines), which refer to the character cell rows and columns. For performance, there is no range checking, so the display will crash if you try to plot outside of the range. The page display is not updated. You can force an update with [`updateDisplay()`](#updatedisplay).
 
 This generates a 2x3 mosaic (sextant) character corresponding to the character cell in the page model that you're plotting to. Existing mosaics in the cell are modified to plot the pixel. If characters with codes 0x0 to 0x1f are in the target cell, these are unchanged so that spacing atributes are preserved, and the plot has no effect. If characters with codes 0x40 to 0x5f are at the character position you're plotting to, this is cleared first.
 
-To use this, you will first need to set graphics mode for the row by writing a graphic spacing attribute, for example by using `writeByte()` and `Attributes.charfromGraphicColour(colour)`.
+To use this, you will first need to set graphics mode for the row by writing a graphic spacing attribute, for example by using [`writeByte()`](#writebyte-colnum-rownum-byte-withupdate) and [`Attributes.charFromGraphicColour()`](/teletext-attributes#attributes-charfromgraphiccolour-colour).
 
 ### plotPoints(graphicColNum, graphicRowNum, numPixelsPerRow, pixelsArray)
 
-Plots multiple pixels, with the top left origin of (`graphicColNum`, `graphicRowNum`) and `numPixelsPerRow`. This internally calls `plot()`. The top-left coordinates are (0, 0) to (79, 74). As with `plot()`, existing spacing attributes are not overridden, and the display is not updated. You can force an update ewith `updateDisplay()`.  Unlike `plot()`, `plotPoints()` does range checking to ensure the plotted pixels fit on the display.
+Plots multiple pixels, with the top left origin of (`graphicColNum`, `graphicRowNum`) and `numPixelsPerRow`. This internally calls [`plot()`](#plot-graphiccolnum-graphicrownum). The top-left coordinates are (0, 0) to (79, 74). As with `plot()`, existing spacing attributes are not overridden, and the display is not updated. You can force an update ewith [`updateDisplay()`](#updatedisplay).  Unlike `plot()`, `plotPoints()` does range checking to ensure the plotted pixels fit on the display.
 
 `numPixelsPerRow` is the number of pixels for each row in the `pixelsArray`.
 
 `pixelsArray` is an array of bytes. Each byte represents a pixel. If its value is 255 then a point is plotted. If it's not 255, the point is unplotted. (This is intended to be easy to generate from some other bitmap pixel source).
 
-To use this, you will first need to set graphics mode for each text row by writing a graphic spacing attribute, for example by using `writeByte()` and  `Attributes.charfromGraphicColour(colour)`.
+To use this, you will first need to set graphics mode for the row by writing a graphic spacing attribute, for example by using [`writeByte()`](#writebyte-colnum-rownum-byte-withupdate) and [`Attributes.charFromGraphicColour()`](/teletext-attributes#attributes-charfromgraphiccolour-colour).
 
 ## Remote-control like functions
 
 ### toggleReveal()
 
-Toggles reveal on or off to show or hide concealed characters. The initial state is to conceal, and the reveal state is reset to concealed on API calls which update the page, set the character set (when `withUpdate` is true) or set the level.  See also the `ttx.reveal` event.
+Toggles reveal on or off to show or hide concealed characters. The initial state is to conceal, and the reveal state is reset to concealed on API calls which update the page, set the character set (when `withUpdate` is true) or set the level.  See also the [`ttx.reveal`](/teletext-event-api) event.
 
 ### toggleMixMode()
 
-Toggle mixed display mode on or off.  See also the `ttx.mix` event.
+Toggle mixed display mode on or off.  See also the [`ttx.mix`](/teletext-event-api) event. In broadcast teletext, this shows the TV picture with the teletext page characters superimposed on top. For this package, it makes the background transparent so that whatever you placed behind the `<div>` will be displayed.
 
 ### toggleBoxMode()
 
-Toggles boxed display mode on or off. See also the `ttx.subtitlemode` event.
+Toggles boxed display mode on or off. See also the [`ttx.subtitlemode`](/teletext-event-api) event. In broadcast teletext, the broadcaster decides whether boxed mode is displayed or not, which is used for subtitles and newsflash pages. In boxed mode, only characters within the boxed area are displayed, with the rest of the screen showing the TV picture. For this package, it makes the background transparent so that whatever you placed behind the `<div>` will be displayed.
 
 ## Screen methods
 
 ### clearScreen(withUpdate)
 
-Clears the screen.  `withUpdate` is an optional boolean, default is `true`. When `true`, the page is cleared immediately.  When `false` the page model is cleared but the display is not updated.  In that case, the screen is cleared the next time you call a function which updates the display, such as `setPageRows`.
+Clears the screen.  `withUpdate` is an optional boolean, default is `true`. When `true`, the page is cleared immediately.  When `false` the page model is cleared but the display is not updated.  In that case, the screen is cleared the next time you call a function which updates the display, such as [`setPageRows()`](#setpagerows-strings).
 
 ### updateDisplay()
 
-Force an update of the display. This is useful in certain cases where the page model has been updated and the display is not automatically updated, for example with `plot()`.
+Force an update of the display. This is useful in certain cases where the page model has been updated and the display is not automatically updated, for example with [`plot()`](#plot-graphiccolnum-graphicrownum).
 
 
 ### showTestPage(pageName)
 
-4 test pages are built-in. This displays a test page. Without the pageName, this rotates through the pages every time this is called.
+4 test pages are built-in. This displays a test page. 
 
-If supplied, the given pageName is displayed. Available pages are: SPLASH, ENGINEERING, ADVERT, UK.
+Without the `pageName`, this rotates through the pages every time this is called. If supplied, the given `pageName` is displayed. Available pages are: SPLASH, ENGINEERING, ADVERT, UK.
 
-The test pages were kindly supplied by https://archive.teletextarchaeologist.org/
+The test pages were kindly supplied by https://teletextarchive.com/
 
 ### toggleGrid()
 
@@ -213,9 +213,9 @@ _Enhancements_ refers to drawing characters on top of the base page, which allow
 
 ### enhance()
 
-Returns an `enhancement` instance.  This is used to overwrite characters on top of the base page. It can be used to write diactitics on G0 characters, and also gives access to characters from the G2 and G3 character sets.  Enhancements aren't displayed at Level 0 or Level 1; you need to call `setLevel()` with `Level[1.5]` or `Level[2.5]`.  The enhancement instance provides the methods below to write the enhancements. The enhancements are cleared with a call to `setPageRows()`, `setPageFromOutputLines()`, `loadPageFromEncodedString()`, `clearScreen()` or `showTestPage()`.
+Returns an `enhancement` instance.  This is used to overwrite characters on top of the base page. It can be used to write diactitics on G0 characters, and also gives access to characters from the G2 and G3 character sets.  Enhancements aren't displayed at Level 0 or Level 1; you need to call [`setLevel()`](#setlevel-level) with `Level[1.5]` or `Level[2.5]`.  The enhancement instance provides the methods below to write the enhancements. The enhancements are cleared with a call to [`setPageRows()`](#setpagerows-strings), [`setPageFromOutputLines()`](#setpagefromoutputlines-lines-header), [`loadPageFromEncodedString()`](#loadpagefromencodedstring-base64input-header), [`clearScreen()`](#clearscreen-withupdate) or [`showTestPage()`](#showtestpage-pagename).
 
-The *position* is a bit like a cursor and analogous to the Active Position in the teletext spec. Call `pos()` to update it, and subsequent calls apply to that position.  Characters are not displayed until `end()` is called on the enhancement instance.  The methods can be chained together, for example `enhance().pos(2, 5).putG0('e', 2).end()` .
+The *position* is a bit like a cursor and analogous to the Active Position in the teletext spec. Call [`pos()`](#pos-col-row) to update it, and subsequent calls apply to that position.  Characters are not displayed until [`end()`](#end) is called on the enhancement instance.  The methods can be chained together, for example `enhance().pos(2, 5).putG0('e', 2).end()`.
 
 The methods are:
 
@@ -229,7 +229,7 @@ Requires level 1.5 or 2.5.  Writes a character from the primary G0 set at the *p
 
 `char` is a character with a code between 0x20 and 0x7f.
 
-`diacriticCode` is optional, and is a number between 0 and 15.  If it's not provided or if its value is 0, the char is written without a diacritic.  Values 1 to 15 correspond to the diacritics in column 4 of the g2_latin set, which are: 
+`diacriticCode` is optional, and is a number between 0 and 15.  If it's not provided or if its value is 0, the char is written without a diacritic.  Values 1 to 15 correspond to the diacritics in column 4 of the `g2_latin` set in the teletext spec, which are: 
 
 | `diacriticCode` | diacritic |
 |-----------------|-----------|
@@ -253,7 +253,7 @@ Requires level 1.5 or 2.5.  Writes a character from the primary G0 set at the *p
 
 Requires level 2.5. Writes a block mosaic character from the G1 set at the *position*. The mosaic's contiguous or separated state from the base page is inherited.
 
-`char` is a character with a code between 0x20 to 0x3f or 0x60 to 0x7f. Character codes 0x40 to 0x5f write a character from the g0 set.
+`char` is a character with a code between 0x20 to 0x3f or 0x60 to 0x7f. Character codes 0x40 to 0x5f write a character from the G0 set.
 
 ### putG2(char)
 
@@ -269,7 +269,7 @@ Requires level 1.5 or 2.5.  Writes a smooth mosaic or line drawing character fro
 
 Character 5f isn't supported, which is intended to show the level 2.5 row background colour in the teletext spec.
 
-The G3 characters are written using the codepoints defined by Unicode for Symbols for Legacy Computing.  You can use the Unscii font to display these correctly. Put Unscii in a `fonts` subdirectory relative to the page containing the teletext display div.  Unscii is available with `npm install @techandsoftware/teletext-fonts` or downloadable from http://viznut.fi/unscii/ .
+The G3 characters are written using the codepoints defined by Unicode for Symbols for Legacy Computing.  You can use the Unscii font to display these correctly. Put Unscii in a `fonts` subdirectory relative to the page containing the teletext display div.  Unscii is available with [`npm install @techandsoftware/teletext-fonts`](https://www.npmjs.com/package/@techandsoftware/teletext-fonts) or from http://viznut.fi/unscii/ .
 
 ### putAt()
 
@@ -285,7 +285,7 @@ Finish adding enhancements, and the display is updated.
 
 `value` is a number or the string `natural`.
 
-Set the aspect ratio of the display.  The page height is kept and the width adjusted. The display's default aspect ratio is 1.2 to match typical teletext displays. The special value of `natural` removes pixel distortion - so the pixels are square - but the page looks squashed.
+Set the aspect ratio of the display.  The page height is kept and the width adjusted. The display's default aspect ratio is 1.2 to match typical teletext displays. The special value of `natural` removes pixel distortion - so the pixels are square - but the page looks squashed horizontally.
 
 ### setHeight(heightInPixels)
 
@@ -299,13 +299,13 @@ Special values are:
 * `native` - uses the native font specific to your operating system. The actual font used depends on your system. Sourced from [bootstrap 4's native font stack](https://getbootstrap.com/docs/4.1/content/reboot/#native-font-stack).
 * `default` - uses the generic font family sans-serif 
 
-Bedstead and Unscii are retro fonts you might want to use in your app if that's the look you want.  You can get them with `npm install @techandsoftware/teletext-fonts` . For Bedstead and Unscii to work correctly, you need to put them in a `fonts` subdirectory relative to the page containing the teletext display div
+Bedstead and Unscii are retro fonts you might want to use in your app if that's the look you want.  You can get them with [`npm install @techandsoftware/teletext-fonts`](https://www.npmjs.com/package/@techandsoftware/teletext-fonts). For Bedstead and Unscii to work correctly, you need to put them in a `fonts` subdirectory relative to the page containing the teletext display div
 * `Bedstead` - a font emulating the mode 7 character generator on a BBC Micro, by bjh21.
 * `Unscii` - a blocky retro-computing font by Viznut.
 
 Normal values for `font` include `serif`, `sans-serif`, `monospace` and specific font family names of the sort you'd use in a CSS stylesheet, which might be browser- or OS-specific. Your containing HTML page can supply its own font family (using Google Fonts, for example) and then refer to it here. Even though the teletext layout is grid-based, you can use a proportional font and the grid is maintained.
 
-If `g0_arabic` was set as the character set, the characters are rendered differently so that they're cursive. Whether this works correctly depends on your font.
+If `g0_arabic` was set as the G0 character set, the characters are rendered differently so that they're cursive. Whether this works correctly depends on your font.
 
 ### setView(view)
 
@@ -313,15 +313,15 @@ If `g0_arabic` was set as the character set, the characters are rendered differe
 * `classic__font-for-mosaic` - render mosaic graphics using a font
 * `classic__graphic-for-mosaic` - render mosaic graphics using SVG shapes.  This is the default view.
 
-When using `classic__font-for-mosaic`, the contiguous mosaic characters use codepoints defined in Unicode [Symbols for Legacy Computing](https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing). The separated mosaic characters use private use codepoints because the separated mosaics are missing from Unicode's legacy computing block.  The mosaic characters use the Unscii font. For this to work, you need to supply Unscii in a `fonts` subdirectory relative to the page containing the teletext display div.  Unscii is available with `npm install @techandsoftware/teletext-fonts` or downloadable from http://viznut.fi/unscii/ .
+When using `classic__font-for-mosaic`, the contiguous mosaic characters use codepoints defined in Unicode [Symbols for Legacy Computing](https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing). The separated mosaic characters use private use codepoints because the separated mosaics are missing from Unicode's legacy computing block. (Actually, they have since been added in Unicode 16, and the package needs to be updated to the new codepoints.) The mosaic characters use the Unscii font. For this to work, you need to supply Unscii in a `fonts` subdirectory relative to the page containing the teletext display div.  Unscii is available with `npm install @techandsoftware/teletext-fonts` or downloadable from http://viznut.fi/unscii/ .
 
 Using the font will result in a smaller SVG.  If you export the SVG from the DOM then you will need to ensure the Unscii font is available so that the SVG can be viewed properly in isolation. Because of issues with getting the edges of the mosaics to join up without gaps, the font size is slightly bigger than it should be. Using SVG graphics for the mosaics is more portable, and the mosaics are more precisely positioned.
 
-## Misc APIs
+## Miscellaneous APIs
 
 ### registerViewPlugin(plugin)
 
-Pass in a plugin class. The plugin can hook in and override parts of the page rendering using a plugin interface.
+Pass in a plugin class. The plugin can hook in and override parts of the page rendering using a plugin interface.  The plugin interface isn't documented yet.
 
 ### getBytes()
 

@@ -96,6 +96,11 @@ The spec also defines navigation and object pages, which I consider out of scope
 
 If you encounter any issues, contact techandsoftwareltd@outlook.com
 
+Here's a few callouts:
+* Character 5f in the G3 set - a transparent cell - isn't supported yet
+* When a font is used for rendering the mosaic characters, the separated form of the mosaics uses private use characters compatible with the Unscii font. Unicode 16 has since added the separated mosaics to Unicode, so these characters need to be updated. This doesn't effect graphical rendering of the mosaic characters
+
+
 ## Credits
 
 * Unscii font used for block graphics when `setView` or `enhance().putG3()` is called - http://viznut.fi/unscii/
