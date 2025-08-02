@@ -1,6 +1,6 @@
 # Full service demo: Geefax
 
-<div style="background: #e0f7ff; border-left: 5px solid #007acc; padding: 1em; font-size: 1.2em; margin: 1em 0; border-radius: 6px;">
+<div style="background: #e0f7ff; border-left: 5px solid #007acc; padding: 0.4em; font-size: 1.2em; margin: 1em 0; border-radius: 6px;">
 
 📺 **[Geefax](https://geefax.robdev.org.uk/)**
 </div>

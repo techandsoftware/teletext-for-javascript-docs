@@ -7,11 +7,12 @@ Writing text and graphics on the base page, and using attributes.
 <div id="screen"></div>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { Attributes, Colour, Teletext } from '@techandsoftware/teletext';
 
+const t = Teletext();
+
 function demo() {
-    const t = Teletext();
     t.addTo('#screen');
     document.querySelector('#revealButton').onclick = () => t.toggleReveal();
 
@@ -81,4 +82,5 @@ function demo() {
 }
     
 onMounted(demo);
+onUnmounted(() => t.destroy());
 </script>
