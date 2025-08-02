@@ -1,5 +1,7 @@
 # Demos
 
+<!-- unused demo -->
+
 <TeletextScreen @ready="runDemo"/>
 
 <script setup>
