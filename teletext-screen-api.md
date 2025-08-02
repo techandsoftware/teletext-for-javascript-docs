@@ -22,6 +22,9 @@ The `options` parameter object is optional, with properties:
 
 Call the following methods on the teletext instance to draw on the screen and control the rendering.
 
+::: warning
+Single page web apps should call [`destroy()`](#destroy) when unmounting, for clean-up tasks.
+:::
 
 ### addTo(selector)
 
@@ -325,8 +328,12 @@ Pass in a plugin class. The plugin can hook in and override parts of the page re
 
 ### getBytes()
 
-Gets the raw bytes used in the page model. The response is a `Uint8Array` with 1000 elements. As each teletext byte is 7-bit, the element values will be between 0 and 127 inclusive.
+Gets the raw bytes used in the base page of the internal model. The response is a `Uint8Array` with 1000 elements. As each teletext byte is 7-bit, the element values will be between 0 and 127 inclusive.
 
 ### getScreenImage()
 
 Gets a static image of the screen. This returns SVG markup.
+
+### destroy()
+
+For single-page apps. Call this in the unmounted hook to remove window event listeners that were added for the events API. This allows for the teletext instance to be garbage collected after it's removed from the DOM.
