@@ -7,7 +7,8 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
+      { text: 'Usage', link: '/teletext-usage' },
+      { text: 'API', link: '/teletext-screen-api' },
       { text: 'Demos', link: '/demos/' }
     ],
 
@@ -29,7 +30,7 @@ export default defineConfig({
           { text: 'Overview', link: '/demos/' },
           { text: 'Base page', link: '/demos/2-base-page' },
           { text: 'Graphics', link: '/demos/3-graphics' },
-          { text: 'Full service', link: '/demos/geefax' },
+          { text: 'Full service', link: '/demos/full-service-geefax' },
         ]
       }
     ],
