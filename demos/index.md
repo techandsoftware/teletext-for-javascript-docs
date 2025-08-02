@@ -1,6 +1,6 @@
 # Demos
 
-The source of the demos is available at https://TODO
+The source of the demos is available at https://github.com/techandsoftware/teletext-for-javascript-docs/tree/main/demos
 
 The first demo creates the teletext object, loads into the `<div>` container, and shows a built-in test page.
 
