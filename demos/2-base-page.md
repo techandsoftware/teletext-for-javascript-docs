@@ -4,15 +4,17 @@ Writing text and graphics on the base page, and using attributes.
 
 <button id="revealButton">Reveal</button>
 
+<ClientOnly>
 <div id="screen"></div>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, nextTick } from 'vue';
 import { Attributes, Colour, Teletext } from '@techandsoftware/teletext';
 
-const t = Teletext();
+let t;
 
 function demo() {
+    t = Teletext();
     t.addTo('#screen');
     document.querySelector('#revealButton').onclick = () => t.toggleReveal();
 
@@ -81,6 +83,7 @@ function demo() {
       white + 'Press REVEAL to show concealed text');
 }
     
-onMounted(demo);
+onMounted(async() => { await nextTick(); demo() });
 onUnmounted(() => t.destroy());
 </script>
+</ClientOnly>

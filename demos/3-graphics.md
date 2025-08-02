@@ -4,15 +4,18 @@ Plotting pixels on the screen. This uses the block mosaic set, G1. Unicode calls
 
 <button id="gridButton">Toggle grid</button>
 
+<ClientOnly>
+
 <div id="screen"></div>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, nextTick } from 'vue';
 import { Attributes, Colour, Teletext } from '@techandsoftware/teletext';
 
-const t = Teletext();
+let t;
 
 function demo() {
+    t = Teletext();
     t.addTo('#screen');
     document.querySelector('#gridButton').onclick = () => t.toggleGrid();
 
@@ -52,6 +55,7 @@ function demo() {
     }
 }
     
-onMounted(demo);
+onMounted(async() => { await nextTick(); demo() });
 onUnmounted(() => t.destroy());
 </script>
+</ClientOnly>
