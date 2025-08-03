@@ -9,13 +9,12 @@ Plotting pixels on the screen. This uses the block mosaic set, G1. Unicode calls
 <div id="screen"></div>
 
 <script setup>
-import { onMounted, onUnmounted, nextTick } from 'vue';
+import { runDemoInVitepress } from './runDemoCodeHelper.js';
 import { Attributes, Colour, Teletext } from '@techandsoftware/teletext';
 
-let t;
+runDemoInVitepress(() => {
 
-function demo() {
-    t = Teletext();
+    const t = Teletext();
     t.addTo('#screen');
     document.querySelector('#gridButton').onclick = () => t.toggleGrid();
 
@@ -53,9 +52,8 @@ function demo() {
             }
         }
     }
-}
-    
-onMounted(async() => { await nextTick(); demo() });
-onUnmounted(() => t.destroy());
+
+    return () => t.destroy(); // cleanup after unmount in vitepress
+});
 </script>
 </ClientOnly>

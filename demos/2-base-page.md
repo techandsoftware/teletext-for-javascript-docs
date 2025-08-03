@@ -8,13 +8,12 @@ Writing text and graphics on the base page, and using attributes.
 <div id="screen"></div>
 
 <script setup>
-import { onMounted, onUnmounted, nextTick } from 'vue';
+import { runDemoInVitepress } from './runDemoCodeHelper.js';
 import { Attributes, Colour, Teletext } from '@techandsoftware/teletext';
 
-let t;
+runDemoInVitepress(() => {
 
-function demo() {
-    t = Teletext();
+    const t = Teletext();
     t.addTo('#screen');
     document.querySelector('#revealButton').onclick = () => t.toggleReveal();
 
@@ -81,9 +80,10 @@ function demo() {
     t.setRow(24, Attributes.charFromTextColour(Colour.MAGENTA) +
       Attributes.charFromAttribute(Attributes.NEW_BACKGROUND) +
       white + 'Press REVEAL to show concealed text');
-}
+
+
+    return () => t.destroy(); // cleanup after unmount in vitepress
+});
     
-onMounted(async() => { await nextTick(); demo() });
-onUnmounted(() => t.destroy());
 </script>
 </ClientOnly>
