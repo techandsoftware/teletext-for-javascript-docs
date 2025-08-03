@@ -2,6 +2,36 @@
 
 Writing text and graphics on the base page, and using attributes.
 
+::: details Code
+```javascript
+import { Attributes, Colour, Teletext } from '@techandsoftware/teletext';
+
+const t = Teletext();
+t.addTo('#screen');
+document.querySelector('#revealButton').onclick = () => t.toggleReveal();
+
+const green = Attributes.charFromTextColour(Colour.GREEN);
+const white = Attributes.charFromTextColour(Colour.WHITE);
+
+// use setRow to draw individual rows
+// Use setPageRows to draw multiple rows with one method, from the top of the screen
+// Use writeByte and writeBytes to draw anywhere on the screen
+
+t.setRow(1, 
+  Attributes.charFromAttribute(Attributes.DOUBLE_HEIGHT) + '        ' +
+  Attributes.charFromAttribute(Attributes.NEW_BACKGROUND) +
+  Attributes.charFromTextColour(Colour.BLUE) +
+  'Welcome to demo 2  ' +
+  Attributes.charFromAttribute(Attributes.BLACK_BACKGROUND)
+  );
+
+t.setRow(4, Attributes.charFromGraphicColour(Colour.RED) + '\x28' +
+      white + 'Draw text on the screen with' + green + 'setRow');
+
+// See the repo for the rest of the code
+```
+:::
+
 <button id="revealButton">Reveal</button>
 
 <ClientOnly>
