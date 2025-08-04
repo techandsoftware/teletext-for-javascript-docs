@@ -30,6 +30,7 @@ export default defineConfig({
           { text: 'Overview', link: '/demos/' },
           { text: 'Base page', link: '/demos/2-base-page' },
           { text: 'Graphics', link: '/demos/3-graphics' },
+          { text: 'Character sets', link: '/demos/4-character-sets' },
           { text: 'Full service', link: '/demos/full-service-geefax' },
         ]
       }
