@@ -24,3 +24,12 @@ html.dark body:has(.is-home) {
 html.dark body:has(.is-home) header {
     background-color: rgb(0 0 0 / 0.5);
 }
+
+/* teletext screen shrinks responsively below the max-width  */
+#screen svg {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    display: block;
+    font-weight: bold;
+}
