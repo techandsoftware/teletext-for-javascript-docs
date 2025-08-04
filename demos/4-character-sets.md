@@ -61,7 +61,7 @@ runDemoInVitepress(() => {
     updateSet(DEFAULT_DEMO_G0_SET);
 
     function updateSet(set) {
-        t.setDefaultG0Charset(set);
+        t.setDefaultG0Charset(set, false);
         t.setRow(3, '     Set: ' + convertCharSetName(set));
     }
 
