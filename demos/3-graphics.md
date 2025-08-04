@@ -1,6 +1,6 @@
 # Demo: Graphics
 
-Plotting pixels on the screen. This uses the block mosaic set, G1. Unicode calls these characters sextants, with 6 pixels per character.
+Plotting pixels on the screen. This uses the block mosaic set, G1. Unicode calls these characters sextants, with 6 pixels per character. The demo uses [`plot()`](../teletext-screen-api#plot-graphiccolnum-graphicrownum) and an implementation of the [Midpoint circle algorithm](https://en.wikipedia.org/wiki/Midpoint_circle_algorithm).
 
 <button id="gridButton">Toggle grid</button>
 
