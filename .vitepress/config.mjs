@@ -32,6 +32,7 @@ export default defineConfig({
           { text: 'Graphics', link: '/demos/3-graphics' },
           { text: 'Character sets', link: '/demos/4-character-sets' },
           { text: 'Animation', link: '/demos/5-animation' },
+          { text: 'Game of Life', link: '/demos/6-life' },
           { text: 'Full service', link: '/demos/full-service-geefax' },
         ]
       }
