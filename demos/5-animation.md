@@ -1,6 +1,6 @@
 # Demo: Animation
 
-This uses [`plot()`](../teletext-screen-api#plot-graphiccolnum-graphicrownum) and the browser's [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame) to spin a rotating cube. A graphics attribute is set at the start of every row on each frame to activate mosaic graphics for that row. Mosaic graphics use characters 0x20 to 0x3f and 0x60 to 0x7f in the G1 set. The cube code was AI-generated.
+This uses [`plot()`](../teletext-screen-api#plot-graphiccolnum-graphicrownum) and the browser's [`requestAnimationFrame()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame) to spin a rotating cube. A graphics attribute is set at the start of every row on each frame to activate mosaic graphics for that row. Mosaic graphics use characters 0x20 to 0x3f and 0x60 to 0x7f in the G1 set. The cube code was AI-generated.
 
 The graphic display options swtich between contiguous and separated mosaics. The third option is text, which removes the graphics attributes to show the corresponding character from the G0 set instead.
 
@@ -20,8 +20,8 @@ import { runDemoInVitepress } from './runDemoCodeHelper.js';
 import { Attributes, Colour, Teletext } from '@techandsoftware/teletext';
 
 const FRAME_RATE = 20; // fps
-
 let clearScreenArray;
+
 
 runDemoInVitepress(() => {
 
@@ -35,8 +35,12 @@ runDemoInVitepress(() => {
   const cube = new SpinningCube(t, 78, 75);
   cube.animate();
 
-  return () => t.destroy(); // cleanup after unmount in vitepress
+  return () => {  // cleanup after unmount in vitepress
+    cube.stop();
+    t.destroy();
+  }
 });
+
 
 function setGraphicsAttributes() {
   const val = document.querySelector('#graphicsSelector').value;
@@ -66,6 +70,7 @@ class SpinningCube {
     this.scale = 20;
     this.angle = 0;
     this.lastFrameTime = 0;
+    this.stopped = false;
 
     this.vertices = [
       [-1, -1, -1],
@@ -153,7 +158,14 @@ class SpinningCube {
       this.lastFrameTime = timestamp;
     }
 
-    requestAnimationFrame(this.animate.bind(this));
+    if (!this.stopped) {
+      this.animationId = requestAnimationFrame(this.animate.bind(this));
+    }
+  }
+
+  stop() {
+    this.stopped = true;
+    if (this.animationId) cancelAnimationFrame(this.animationId);
   }
 }
 
