@@ -137,13 +137,15 @@ In this:
 
 These methods let you set the column as well as the row.
 
-### writeBytes(colNum, rowNum, [lines])
+### writeBytes(colNum, rowNum, [lines], withUpdate)
 
-Writes each line in the array to the screen starting from `colNum`, `rowNum`.  This allows you to place a block of text on the screen without affecting preceding columns. `colNum` is from 0 to 39, `rowNum` from 0 to 24.
+Writes each line in the array to the screen starting from `colNum`, `rowNum`.  This allows you to place a block of text on the screen without affecting preceding columns. `lines` is a array of strings, up to 25 elements long. Each string is up to 40 characters long. `colNum` is from 0 to 39, `rowNum` from 0 to 24.
+
+`withUpdate` is an optional boolean, default is `false`. When true, the page display is updated.
 
 ### writeByte(colNum, rowNum, byte, withUpdate)
 
-Writes the byte to the `colNum`, `rowNum`.  `colNum` is from 0 to 39, `rowNum` from 0 to 24. The `byte` should have a character code of 0x0 to 0x127. The byte won't display literally, as the display uses the active G0 character set and spacing attributes to work out what to show.
+Writes the byte to the `colNum`, `rowNum`.  `colNum` is from 0 to 39, `rowNum` from 0 to 24. The `byte` is a string, and should have a character code of 0x0 to 0x127. The byte won't display literally, as the display uses the active G0 character set and spacing attributes to work out what to show.
 
 `withUpdate` is an optional boolean, default is `false`. When true, the page display is updated.
 
