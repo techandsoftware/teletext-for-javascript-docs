@@ -159,13 +159,12 @@ class SpinningCube {
     }
 
     if (!this.stopped) {
-      this.animationId = requestAnimationFrame(this.animate.bind(this));
+      requestAnimationFrame(this.animate.bind(this));
     }
   }
 
   stop() {
     this.stopped = true;
-    if (this.animationId) cancelAnimationFrame(this.animationId);
   }
 }
 
