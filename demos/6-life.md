@@ -1,6 +1,6 @@
 # Demo: Conway's Game of Life
 
-An implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life). This uses the G1 mosaic graphics, with a segment for each cell. The left-most column has an attribute to activate graphics for each row, giving a game grid of 78x75. A 2d array is used for the life simulation, and written to the display per frame using `plot()`.
+An implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life). This uses the G1 mosaic graphics, with a segment for each cell. The left-most column has an attribute to activate graphics for each row, giving a game grid of 78x75. A 2d array is used for the life simulation, and written to the display per frame using [`plot()`](../teletext-screen-api#plot-graphiccolnum-graphicrownum).
 
 <button id="restartButton">Restart Game</button>
 
