@@ -1,6 +1,6 @@
 # Demo: Character sets
 
-This shows each G0 character set, with character range from 0x20 to 0x7f. Select a set from the drop-down menu, which sets the default G0 set for the whole screen.  Note that ASCII isn't available, although g0_latin is close. The demo is using [`setDefaultG0Charset()`](../teletext-screen-api#setdefaultg0charset-charset-withupdate).
+This shows each G0 character set, with character range from 0x20 to 0x7f. Select a set from the drop-down menu, which sets the default G0 set for the whole screen.  Note that ASCII isn't available, although g0_latin is close. The demo is using [`setDefaultG0Charset()`](../teletext-screen-api#setdefaultg0charset-charset-withupdate).  The method also sets the corresponding G2 set. The G2 set on the screen is drawn on to the base page as enhancements, using [`pos()`](../teletext-screen-api#pos-col-row) and [`putG2()`](../teletext-screen-api#putg2-char).
 
 <label for="g0setselector">G0 set selection</label><br>
 <select style="margin-bottom: 1rem;" id="g0setselector" on>
@@ -33,7 +33,7 @@ This shows each G0 character set, with character range from 0x20 to 0x7f. Select
 
 <script setup>
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
-import { Attributes, Colour, Teletext } from '@techandsoftware/teletext';
+import { Attributes, Colour, Level, Teletext } from '@techandsoftware/teletext';
 
 const DEFAULT_DEMO_G0_SET = 'g0_latin__english';
 
@@ -41,11 +41,34 @@ runDemoInVitepress(() => {
 
     document.querySelector('#g0setselector').onchange = g0setselected;
     const t = Teletext();
+    // level 1.5 is required to draw enhancements
+    t.setLevel(Level[1.5]);
     t.addTo('#screen');
-    t.setDefaultG0Charset(DEFAULT_DEMO_G0_SET);
 
-    t.setRow(1, '    \x03Teletext G0 set demo', false);
-    t.setRow(6, '\x02    0 1 2 3 4 5 6 7 8 9 a b c d e f', false);
+    drawG0Set(t);
+    drawG2Set(t);
+
+    updateSet(t, DEFAULT_DEMO_G0_SET);
+    
+    function g0setselected(e) {
+        const set = e.target.value;
+        updateSet(t, set);
+    }
+
+    return () => t.destroy(); // cleanup after unmount in vitepress
+});
+
+function updateSet(t, set) {
+    const setNames = getSetNames(set);
+    t.setDefaultG0Charset(set, false);
+    t.setRow(2, ' \x03G0 set:\x06' + setNames.g0SetName);
+    t.setRow(14, ' \x03G2 set:\x06' + setNames.g2SetName);
+
+}
+
+function drawG0Set(t) {
+    t.setRow(3, '  Placed on base page');
+    t.setRow(5, '\x02    0 1 2 3 4 5 6 7 8 9 a b c d e f', false);
 
     let charCode = 0x20;
     let chars;
@@ -55,26 +78,41 @@ runDemoInVitepress(() => {
             chars += String.fromCharCode(charCode) + ' ';
             charCode++;
         }
-        t.setRow(r + 8, chars, false);
+        t.setRow(r + 7, chars, false);
+    }
+}
+
+function drawG2Set(t) {
+    t.setRow(15, '  Placed using level 1.5 enhancements');
+
+    for (let r = 0; r < 6; r++) {
+        t.setRow(r + 17, '  \x02' + (r+2) + '\x07', false);
     }
 
-    updateSet(DEFAULT_DEMO_G0_SET);
-
-    function updateSet(set) {
-        t.setDefaultG0Charset(set, false);
-        t.setRow(3, '     Set: ' + convertCharSetName(set));
+    // draw G2 using enhancements on base page
+    const e = t.enhance();
+    let charCode = 0x20;
+    for (let r = 0; r < 6; r++) {
+        for (let c = 0; c < 16; c++) {
+            const char = String.fromCharCode(charCode);
+            e.pos((c * 2) + 5, r + 17).putG2(char);
+            charCode++;
+        }
     }
+    e.end();
 
-    function g0setselected(e) {
-        const set = e.target.value;
-        updateSet(set);
-    }
+}
 
-    return () => t.destroy(); // cleanup after unmount in vitepress
-});
+function getSetNames(charset) {
+    const g0SetName = charset.replace(/_/g, ' ');
 
-function convertCharSetName(charset) {
-    return charset.replace(/_/g, ' ');
+    let g2SetName = charset.replace(/^g0_(.+?)(?:$|_.+)/, "g2 $1");
+    if (g2SetName == 'g2 hebrew') g2SetName = 'g2 arabic';
+
+    return {
+        g0SetName,
+        g2SetName
+    };
 }
 </script>
 </ClientOnly>
