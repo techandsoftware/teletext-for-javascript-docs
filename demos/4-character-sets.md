@@ -35,7 +35,7 @@ This shows each G0 character set, with character range from 0x20 to 0x7f. Select
 
 ## G3
 
-The G3 set requires level 2.5. Like G2, characters are placed using enhancements, with the [`putG3()`](../teletext-screen-api#putg3-char) method.  The [Unscii](http://viznut.fi/unscii/) font is used to render the G3 characters.
+The G3 set requires level 2.5. Like G2, characters are placed using enhancements, with the [`putG3()`](../teletext-screen-api#putg3-char) method.  The [Unscii](http://viznut.fi/unscii/) font is used to render the G3 characters, which are mapped to characters in Unicode's Symbols for Legacy Computing block.
 
 <ClientOnly>
 <div id="screen2"></div>
