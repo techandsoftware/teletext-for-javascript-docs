@@ -11,7 +11,15 @@ export default defineConfig({
       { text: 'API', link: '/teletext-screen-api' },
       { text: 'Demos', link: '/demos/' }
     ],
-
+    search: {
+      provider: 'algolia',
+      options: {
+        appId: '4CTDMOKL14',
+        // search key is public
+        apiKey: '0d35bd6d99b5c4a5c3931d504682c4e8',
+        indexName: 'Teletext for Javascript'
+      }
+    },
     sidebar: [
       {
         text: '@techandsoftware/teletext',
