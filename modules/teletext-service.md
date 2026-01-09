@@ -4,6 +4,11 @@ The package represents a teletext service, and is a wrapper for [@techandsoftwar
 
 This implements the display portion of teletext and wraps it up as a web app.  It's not an emulator as it doesn't decode teletext data transmission over the VBI like a TV or teletext display adapter.
 
+# Demos
+
+* [Minimal demo](./teletext-service-demo)
+* [Full service demo](./teletext-service-demo-full-service)
+
 # Usage
 
 ```bash
