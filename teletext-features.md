@@ -1,4 +1,4 @@
-# @techandsofware/teletext
+# @techandsoftware/teletext
 
 This package renders teletext pages using vector graphics (SVG). Note that this implements the display part of teletext, not the VBI packets, and operates as a screen or a dumb terminal.  The application using this package will need to supply the page content, implement page numbers, navigation, etc.  The package provides an API to set page content and change the display characteristics such as the screen height and aspect ratio.
 
@@ -8,7 +8,7 @@ Extensions are supported via plugins.
 
 See also these packages:
 
-* [@techandsoftware/teletext-service](https://www.npmjs.com/package/@techandsoftware/teletext-service), a higher level package with page numbers, subpage and colour button navigation. This can be used as the basis of an application.
+* [@techandsoftware/teletext-service](./modules/teletext-service), a higher level package with page numbers, subpage and colour button navigation. This can be used as the basis of an application.
 * [@techandsoftware/teletext-caster](https://www.npmjs.com/package/@techandsoftware/teletext-caster), Chromecast integration, for displaying teletext on Chromecast and compatible TVs. This is clearly what Google intended all along.
 * [@techandsoftware/teletext-plugin-smooth-mosaic](https://www.npmjs.com/package/@techandsoftware/teletext-plugin-smooth-mosaic), a plugin which applies a pixel-art scaling algorithm to the block mosaics to create higher resolution graphics. The algorithm used is [hqx](https://en.wikipedia.org/wiki/Hqx_(algorithm)) by Maxim Stepin. The result isn't authentic teletext, but this can create a satisfying result. This is unrelated to the G3 character set in level 2.5, which contains smooth mosaic characters.
 * [@techandsoftware/teletext-fonts](https://www.npmjs.com/package/@techandsoftware/teletext-fonts) is a helper package which contains a couple of fonts equipped with block mosaic characters (sextants). This is optional and unnecessary if rendering the mosaics graphically via `setView()`.

@@ -41,8 +41,21 @@ export default defineConfig({
           { text: 'Graphics', link: '/demos/3-graphics' },
           { text: 'Character sets', link: '/demos/4-character-sets' },
           { text: 'Animation', link: '/demos/5-animation' },
-          { text: 'Game of Life', link: '/demos/6-life' },
-          { text: 'Full service', link: '/demos/full-service-geefax' },
+          { text: 'Game of Life', link: '/demos/6-life' }
+        ]
+      },{
+        text: "More modules",
+        items: [
+          {
+            text: "teletext-service",
+            items: [
+              { text: 'Overview', link: '/modules/teletext-service' },
+              { text: 'API', link: '/modules/teletext-service-api' },
+              { text: 'Page fetcher', link: '/modules/teletext-service-page-fetcher' },
+              { text: 'Demo - minimal', link: '/modules/teletext-service-demo' },
+              { text: 'Demo - full service', link: '/modules/teletext-service-demo-full-service' }
+            ]
+          }
         ]
       }
     ],
