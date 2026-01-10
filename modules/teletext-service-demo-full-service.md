@@ -1,19 +1,10 @@
 # teletext-service demo: Geefax
 
-<ClientSideOnly>
-  <button
-    onclick="window.open('https://geefax.robdev.org.uk/', '_blank', 'noopener')"
-    style="padding-bottom: 0.5em"
-  >
-    View in new tab ↗
-  </button>
-    <div id="screenembed">
-        <iframe
-           src="https://geefax.robdev.org.uk/"
-           onload="this.focus()"
-        ></iframe>
-    </div>
-</ClientSideOnly>
+<script setup>
+import ScreenEmbed from '../components/ScreenEmbed.vue'
+</script>
+
+<ScreenEmbed src="https://geefax.robdev.org.uk/" />
 
 This is a web application which uses [@techandsoftware/teletext-service](../modules/teletext-service) and includes page numbers and fastext (colour button) navigation. Content is from the Guardian using their public API. Pages are received over HTTPS in JSON structures. The underlying pages are byte-compatible with teletext, rendered using [@techandsoftware/teletext](/teletext-features) to SVG for a scalable and high-res display.
 
