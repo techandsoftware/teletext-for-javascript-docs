@@ -6,7 +6,7 @@
   >
     View in new tab ↗
   </button>
-    <div class="screen">
+    <div id="screenembed">
         <iframe
            src="https://teletext-service.netlify.app"
            onload="this.focus()"
@@ -15,12 +15,19 @@
 </ClientSideOnly>
 
 <style>
-.screen {
+#screenembed {
   width: 100%;
   aspect-ratio: 4 / 3;
 }
 
-.screen iframe {
+/* landscape view */
+@media (max-width: 695px) {
+  #screenembed {
+    aspect-ratio: 3 / 5;
+  }
+}
+
+#screenembed iframe {
   width: 100%;
   height: 100%;
   border: 0;

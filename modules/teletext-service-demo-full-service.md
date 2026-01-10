@@ -7,26 +7,13 @@
   >
     View in new tab ↗
   </button>
-    <div class="screen">
+    <div id="screenembed">
         <iframe
            src="https://geefax.robdev.org.uk/"
            onload="this.focus()"
         ></iframe>
     </div>
 </ClientSideOnly>
-
-<style>
-.screen {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-}
-
-.screen iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-</style>
 
 This is a web application which uses [@techandsoftware/teletext-service](../modules/teletext-service) and includes page numbers and fastext (colour button) navigation. Content is from the Guardian using their public API. Pages are received over HTTPS in JSON structures. The underlying pages are byte-compatible with teletext, rendered using [@techandsoftware/teletext](/teletext-features) to SVG for a scalable and high-res display.
 
