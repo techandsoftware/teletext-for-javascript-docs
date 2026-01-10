@@ -22,7 +22,7 @@ Creates a teletext service instance. `options` is required, and has the followin
 ```
 
 * `DOMSelector` is required, and is a selector string for the teletext screen container, e.g. `#teletextscreen`
-* `defaultG0Charset` sets the default G0 character set on the teletext instance. If not passed in, the default character set is `g0_latin`. See `setDefaultG0Charset()` in [@techandsoftware/teletext](https://www.npmjs.com/package/@techandsoftware/teletext) for the available values
+* `defaultG0Charset` sets the default G0 character set on the teletext instance. If not passed in, the default character set is `g0_latin`. See [`setDefaultG0Charset()`](../teletext-screen-api#setdefaultg0charset-charset-withupdate) in [@techandsoftware/teletext](../teletext-usage) for the available values
 * `caster` - pass in a `ttxcaster` from [@techandsoftware/teletext-caster](https://www.npmjs.com/package/@techandsoftware/teletext-caster) and this will be used to show pages on the connected Chromecast
 * `header` is the string to use as the header row. If not passed in, a default header row is used. See below for tokens that can be used in the header.
 * `fetcher` - pass in an object used to fetch teletext pages. If this is not passed in, then pages are expected to be in JSON and retrieved from same directory of the web page containing the teletext instance.  See the 'Default page data source' section on the expected data format for the default fetcher. See the 'fetcher object' section below for details on passing in your own fetcher.
@@ -99,7 +99,7 @@ If the page doesn't have the link, the promise resolves to `null`.
 
 ### service.teletextInstance property
 
-Returns the teletext instance object (an instance of `@techandsoftware/teletext`), so you can call methods on this directly, for example to change the font, draw pages or any other API calls you need direct access to. For the API, see https://www.npmjs.com/package/@techandsoftware/teletext
+Returns the teletext instance object (an instance of `@techandsoftware/teletext`), so you can call methods on this directly, for example to change the font, draw pages or any other API calls you need direct access to.  [View the teletext instance API](../teletext-screen-api).
 
 
 ## TeletextServiceViewer class
@@ -125,7 +125,7 @@ Creates a teletext service viewer instance. `options` is optional and has the fo
 ```
 
 * `DOMSelector` is a selector string for the teletext screen container. Default is `#teletextscreen`
-* `defaultG0Charset` sets the default G0 character set on the teletext instance. Defaults to `g0_latin__english`. See `setDefaultG0Charset()` in [@techandsoftware/teletext](https://www.npmjs.com/package/@techandsoftware/teletext) for the available values
+* `defaultG0Charset` sets the default G0 character set on the teletext instance. Defaults to `g0_latin__english`. See [`setDefaultG0Charset()`](../teletext-screen-api#setdefaultg0charset-charset-withupdate) in [@techandsoftware/teletext](../teletext-usage) for the available values
 * `header` is the header row to replace the default header row. See the "`header` format" section above for the format
 * `frontPage` is the front page number, which will be shown automatically. Defaults to page 100.  Pass in null to not show the front page automatically
 * `smoothMosaics` - if true will use a pixel-art scaling algorithm to generate smoother mosaic graphics when the service starts. Default is false
