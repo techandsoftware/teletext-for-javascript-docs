@@ -5,6 +5,9 @@ export default defineConfig({
   title: "Teletext for JS",
   description: "@techandsoftware/teletext and related packages",
   cleanUrls: true,
+  sitemap: {
+    hostname: 'https://teletext-for-javascript-docs.robdev.org.uk'
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
