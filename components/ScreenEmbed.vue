@@ -2,25 +2,26 @@
   <button @click="openInNewTab" style="padding-bottom: 0.5em">
     View in new tab ↗
   </button>
-  <div ref="el" class="screenembed">
-    <iframe :src="src" onload="this.focus()"></iframe>
+  <div ref="framecontainer" class="screenembed">
+    <iframe :src onload="this.focus()" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { useTemplateRef, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
   src: { type: String, required: true }
 });
 
-const el = ref(null);
+const el = useTemplateRef("framecontainer");
 const THRESHOLD = 646;
 let sizeObserver = null;
 
 onMounted(() => {
   if (!el.value) return;
 
+  // set the aspect ratio depending on the width of the iframe container
   sizeObserver = new ResizeObserver(entries => {
     const w = entries[0].contentRect.width;
     const newRatio =  w < THRESHOLD ? '3 / 5' : '4 / 3';
@@ -35,7 +36,7 @@ onUnmounted(() => {
 });
 
 function openInNewTab() {
-  window.open(props.src, '_blank', 'noopener');
+  window.open(props.src, '_blank');
 }
 </script>
 
