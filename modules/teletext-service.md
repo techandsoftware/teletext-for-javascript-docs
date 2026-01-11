@@ -18,6 +18,12 @@ npm install @techandsoftware/teletext-service
 
 The module includes two classes and an HTML web application. The `TeletextService` class handles page retrieval and display. The `TeletextServiceViewer`  class is higher level with support for page numbers, subpages and fastext (coloured button links), and is tightly coupled to the provided HTML UI.
 
+## Default user interface
+
+Run `npm run preview` locally which will serve up the default user-interface, provided in [`dist/index.html`](https://github.com/techandsoftware/teletext-service/tree/master/dist/index.html).  You can use this as-is, or fork it. It's tightly coupled to the `TeletextServiceViewer` class.
+
+[See the demo of the default UI](./teletext-service-demo).
+
 ## TeletextService class
 
 This is the minimum code needed to use the `TeletextService` class. It instantiates the class, and loads page 100. With the default page loader, this fetches 1.json, with matches a specific schema and contains multiple pages.
@@ -38,7 +44,7 @@ service.showPage("100");
 </script>
 ```
 
-To handle multiple pages, you will need to implment your own page number entry method.
+To handle multiple pages, you will need to implement your own page number entry method.  `TeletextServiceViewer` handles this for you.
 
 The required JSON structure for the page data is described below.
 
@@ -61,7 +67,7 @@ The Javascript code is invoked with:
 </script>
 ```
 
-For the rest of HTML needed, see `public/index.html` in the repo.
+For the rest of the HTML that's needed, see [`dist/index.html`](https://github.com/techandsoftware/teletext-service/tree/master/dist/index.html) in the repo.
 
 To run locally, clone the project then run `npm install` and `npm run dev` .
 
