@@ -153,7 +153,7 @@ The cast button will appear in the panel below on supporting browsers, and if yo
 
 <i>Cast state: {{ castState }}</i>
 
-If there's no button above then your browser doesn't support Google's web sender API.
+If the cast state is 'state not set' then your browser doesn't support Google's web sender API.
 
 <strong>2. Select a page to cast</strong>
 
