@@ -8,6 +8,13 @@ export default defineConfig({
   sitemap: {
     hostname: 'https://teletext-for-javascript-docs.robdev.org.uk'
   },
+  vue: {
+    template: {
+      compilerOptions: {
+        isCustomElement: (tag) => tag === 'google-cast-launcher'
+      }
+    }
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
@@ -58,7 +65,8 @@ export default defineConfig({
               { text: 'Demo - minimal', link: '/modules/teletext-service-demo' },
               { text: 'Demo - full service', link: '/modules/teletext-service-demo-full-service' }
             ]
-          }
+          },
+          { text: 'teletext-caster', link: '/modules/teletext-caster' }
         ]
       }
     ],

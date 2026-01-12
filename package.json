@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@techandsoftware/teletext-caster": "^0.10.3",
     "vitepress": "^1.6.4"
   },
   "scripts": {
