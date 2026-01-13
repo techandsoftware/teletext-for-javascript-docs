@@ -141,6 +141,14 @@ Activates or deactivates box mode mode display. The page needs to contain boxed 
 
 Shows or hides a grid.
 
+### ttxcaster.mount()
+
+For single page apps, call this in your mounted hook, so that the available event and state change event are re-issued. This ensure that your UI is synced with the cast state. You need to call `mount()` after `ttxcaster.available.attach()` and `ttxcaster.available.attach()`, if your are using these.
+
+### ttxcaster.destroy()
+
+For single page apps, call this in your unmounted hook. This removes event listener references, and can help garbage collection.
+
 ## Demo
 
 The cast button will appear in the panel below on supporting browsers, and if you have a Chromecast on the same network. Generally, that's in Chrome on any OS except iOS.
@@ -182,17 +190,13 @@ import { ref } from 'vue';
 import { runDemoInVitepress } from '../demos/runDemoCodeHelper.js';
 import { ttxcaster as screen } from '@techandsoftware/teletext-caster';
 
+addCastSDKScript();
+
 const castState = ref('State not set');
 
 runDemoInVitepress(() => {
-    if (window.chrome?.cast) return;
-
-    const s = document.createElement('script')
-    s.src = 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1'
-    s.async = true
-    document.head.appendChild(s);
-
     screen.castStateChanged.attach(castStateChanged);
+    screen.mount();
 
     // the buttons map directly to API calls on ttxcaster
     document.querySelector('#revealButton').addEventListener('click', () => screen.toggleReveal());
@@ -206,8 +210,19 @@ runDemoInVitepress(() => {
     // the page data format is described by Simon Rawles https://github.com/rawles/edit.tf
     document.querySelectorAll('[data-page]').forEach(e => e.addEventListener('click', () => screen.display(e.dataset.page)));
 
-    return void 0; // no cleanup
+    return () => { screen.destroy(); }
 });
+
+function addCastSDKScript() {
+  if (typeof window === 'undefined') return;
+  if (document.querySelector('script[src*="cast_sender.js"]')) return;
+
+  const s = Object.assign(document.createElement('script'), {
+    src: 'https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1',
+    async: true,
+  });
+  document.head.appendChild(s);
+}
 
 function castStateChanged() {
     castState.value = screen.getCastState();
