@@ -1,6 +1,6 @@
 # @techandsoftware/teletext-service
 
-The package represents a teletext service, and is a wrapper for [@techandsoftware/teletext](../teletext-features).  It adds page numbers, subpage and fastext navigation (colour buttons). By default, pages are fetched as JSON over HTTP, but that can be overriden by your own page fetcher. It supports casting pages to Chromecast using [@techandsoftware/teletext-caster](https://www.npmjs.com/package/@techandsoftware/teletext-caster), and higher-resolution mosaic graphics using a pixel-art scaling algorithm via [@techandsoftware/teletext-plugin-smooth-mosaic](https://www.npmjs.com/package/@techandsoftware/teletext-plugin-smooth-mosaic).
+The package represents a teletext service, and is a wrapper for [@techandsoftware/teletext](../teletext-features).  It adds page numbers, subpage and fastext navigation (colour buttons). By default, pages are fetched as JSON over HTTP, but that can be overriden by your own page fetcher. It supports casting pages to Chromecast using [@techandsoftware/teletext-caster](./teletext-caster), and higher-resolution mosaic graphics using a pixel-art scaling algorithm via [@techandsoftware/teletext-plugin-smooth-mosaic](https://www.npmjs.com/package/@techandsoftware/teletext-plugin-smooth-mosaic).
 
 This implements the display portion of teletext and wraps it up as a web app.  It's not an emulator as it doesn't decode teletext data transmission over the VBI like a TV or teletext display adapter.
 
@@ -55,7 +55,7 @@ See:
 
 ## TeletextServiceViewer class
 
-`TeletextServiceViewer` is a web app wrapper around `TeletextService`.  It handles page number entry, subpage nav, fastext button state changes and entry, reveal and mix, with control using the webapp UI or keyboard shortcuts. It's tightly-coupled to the HTML so it's not really an API but it does support some options.  It's most likely you'll use the code as it is or fork it. The class also incorporates [teletext-caster](https://www.npmjs.com/package/@techandsoftware/teletext-caster) so that pages can be viewed on a Chromecast in supporting browsers.
+`TeletextServiceViewer` is a web app wrapper around `TeletextService`.  It handles page number entry, subpage nav, fastext button state changes and entry, reveal and mix, with control using the webapp UI or keyboard shortcuts. It's tightly-coupled to the HTML so it's not really an API but it does support some options.  It's most likely you'll use the code as it is or fork it. The class also incorporates [teletext-caster](./teletext-caster) so that pages can be viewed on a Chromecast in supporting browsers.
 
 The Javascript code is invoked with:
 

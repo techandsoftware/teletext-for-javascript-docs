@@ -23,7 +23,7 @@ Creates a teletext service instance. `options` is required, and has the followin
 
 * `DOMSelector` is required, and is a selector string for the teletext screen container, e.g. `#teletextscreen`
 * `defaultG0Charset` sets the default G0 character set on the teletext instance. If not passed in, the default character set is `g0_latin`. See [`setDefaultG0Charset()`](../teletext-screen-api#setdefaultg0charset-charset-withupdate) in [@techandsoftware/teletext](../teletext-usage) for the available values
-* `caster` - pass in a `ttxcaster` from [@techandsoftware/teletext-caster](https://www.npmjs.com/package/@techandsoftware/teletext-caster) and this will be used to show pages on the connected Chromecast
+* `caster` - pass in a `ttxcaster` from [@techandsoftware/teletext-caster](./teletext-caster) and this will be used to show pages on the connected Chromecast
 * `header` is the string to use as the header row. If not passed in, a default header row is used. See below for tokens that can be used in the header.
 * `fetcher` - pass in an object used to fetch teletext pages. If this is not passed in, then pages are expected to be in JSON and retrieved from same directory of the web page containing the teletext instance.  See the 'Default page data source' section on the expected data format for the default fetcher. See the 'fetcher object' section below for details on passing in your own fetcher.
 * `baseURL` - if you use the default fetcher, then you can pass in a URL to use as the base URL for getting JSON content. The default base URL is the current directory of the URL running the javascript code.  The URL should include a trailing `/`
