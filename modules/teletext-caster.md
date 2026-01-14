@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a Javascript module to cast teletext pages to Chromecast devices from supporting browsers. Supporting browsers are Chrome on Windows/Mac/Linux/ChromeOS/Android, but not Chrome on iOS.  It possibly supports other browsers if they implement Goggle's [Web Sender SDK](https://developers.google.com/cast/docs/web_sender).
+This is a Javascript module to cast teletext pages to Chromecast devices from supporting browsers. Supporting browsers are Chrome on Windows/Mac/Linux/ChromeOS/Android, but not Chrome on iOS.  It possibly supports other browsers if they implement Google's [Web Sender SDK](https://developers.google.com/cast/docs/web_sender).
 
 It can be used on any teletext related website or web app, or in conjunction with [@techandsoftware/teletext](../teletext-usage) and [@techandsoftware/teletext-service](./teletext-service).
 
