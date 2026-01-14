@@ -100,7 +100,11 @@ Register a function to receive the available event. The available event happens 
 
 ### ttxcaster.castStateChanged.attach(function)
 
-Register a function for state change events. The function is called when the cast icon state changes. The state can be retrieved with `ttxcaster.getCastState()`.  (This is a proxy to [CAST_STATE_CHANGED](https://developers.google.com/cast/docs/reference/web_sender/cast.framework#.CastContextEventType) events on [CastContext](https://developers.google.com/cast/docs/reference/web_sender/cast.framework.CastContext) in Google's cast API.)
+Register a function for state change events. The function is called when the cast icon state changes. The state can be retrieved with `ttxcaster.getCastState()`.
+
+::: info
+This is a proxy to [CAST_STATE_CHANGED](https://developers.google.com/cast/docs/reference/web_sender/cast.framework#.CastContextEventType) events on [CastContext](https://developers.google.com/cast/docs/reference/web_sender/cast.framework.CastContext) in Google's cast API.
+:::
 
 ### ttxcaster.getCastState()
 
@@ -111,7 +115,9 @@ Gets the cast icon state. The response is a string with one of these values:
 * `CONNECTING`
 * `CONNECTED`
 
-(This is a proxy to [CastContext.getCastState()](https://developers.google.com/cast/docs/reference/web_sender/cast.framework.CastContext#getCastState) in Google's cast API.)
+::: info
+This is a proxy to [CastContext.getCastState()](https://developers.google.com/cast/docs/reference/web_sender/cast.framework.CastContext#getCastState) in Google's cast API.
+:::
 
 ### ttxcaster.setSmoothMosaics()
 
