@@ -15,7 +15,7 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 </div>
 
 <label>Teletext level
-  <select autocomplete="off" v-model="screenLevel" @change="onLevelChanged(screenLevel)">
+  <select autocomplete="off" v-model="screenLevel" @change="onLevelChanged">
     <option>0</option>
     <option selected>1</option>
     <option>1.5</option>
@@ -225,8 +225,8 @@ function writePageWithSizeAttributes() {
 }
 
 
-function onLevelChanged(newLevel) {
-  apiInvokedMessage.value = `calling setLevel(Level[${newLevel}])`;
+function onLevelChanged() {
+  apiInvokedMessage.value = `calling setLevel(Level[${screenLevel.value}])`;
   // the watch() function will call setLevel
 }
 
