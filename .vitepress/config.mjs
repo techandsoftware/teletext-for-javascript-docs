@@ -4,6 +4,22 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "Teletext for JS",
   description: "@techandsoftware/teletext and related packages",
+  head: [
+    [ // fonts are used in the demos
+      'link',
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Ubuntu&display=swap'
+      }
+    ],
+    [
+      'link',
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap'
+      }
+    ]
+  ],
   cleanUrls: true,
   sitemap: {
     hostname: 'https://teletext-for-javascript-docs.robdev.org.uk'
@@ -53,7 +69,7 @@ export default defineConfig({
           { text: 'Animation', link: '/demos/5-animation' },
           { text: 'Game of Life', link: '/demos/6-life' }
         ]
-      },{
+      }, {
         text: "More modules",
         items: [
           {

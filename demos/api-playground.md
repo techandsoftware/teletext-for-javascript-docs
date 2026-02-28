@@ -17,9 +17,23 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 <label>Teletext level
   <select autocomplete="off" v-model="screenLevel" @change="onLevelChanged(screenLevel)">
     <option>0</option>
-    <option>1</option>
+    <option selected>1</option>
     <option>1.5</option>
     <option>2.5</option>
+  </select>
+</label>
+
+<label>Font
+  <select v-model="screenFont" @change="onFontChanged">
+    <option>sans-serif</option>
+    <option>Bedstead</option> 
+    <option>native</option> 
+    <option>serif</option> 
+    <option>Unscii</option> 
+    <option>Ubuntu</option>
+    <option>Roboto Mono</option>
+    <option>monospace</option> 
+    <option>cursive</option>
   </select>
 </label>
 
@@ -37,6 +51,7 @@ import { Attributes, Colour, Teletext, Level } from '@techandsoftware/teletext';
 
 const apiInvokedMessage = ref('// Use the buttons above and the invoked API will appear here');
 const screenLevel = ref('1');
+const screenFont = ref('sans-serif');
 
 // this is raw page data used with loadPageFromEncodedString()
 const WIKIFAX = 'QIECBAgQV9OvTmw-EDFgwQIKmjry5oIPDkgZMkDFwwYOmDAugQNEDRogaIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIAh0uqYOmDrRowJGjxg80ZNGDIHqaMqDNyy5UCBAgQIECBAgCHS6DSh0odWpSwat0HfU61atYfLux-cezfwy5NOFAgQIECAovXr1q9avWrV65cuXrFq5atWr169evXr169evXr169evXr0CBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgDRuW_ag6b8mHyn5oM2XD068suRBh5dNOPZlQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIAcXDy6aA-nmg6aMqDpo08siDhsw7svRBm5b9qDpoyoOfXcgQYd2RB00ZUG_ds8oMPPpy37t-3Tjw7EG_Fqy4-iDXu399yBB03oNGHli39eSDZpzZVyCT0QaeaDpoyoMmXdzy8-iBAgQIEHDZh3ZeiDTuQdNGVBz37MPJBz88-mXagw7siDbv59ECBAgQbcPPnp7ZUG_Mg6aMqDNv68kHLfj1-UHDZh3ZenNcgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIEEHFv69EDJylQb8yCLh5dNCfmg59eWbDjyoNPNBsw7sixAgQd9PTQg6aMqDll24dO7Jl5IMe_tl5ZciDTuQd8PTLyQYd2RBt649CDfmQRcPLpoT80HDfsw8kHLLn0793NBj39svLLkQIEGncg048q5AgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBBFw8umhBm38tuXIg39svJA0XNUGLTs2ad-5B5y4eXNAgQIEGHPvXIK-npo07kHTRlQZtPLn0QYtOzZp37kHnLh5c1iBAgQbNObKgw8OGXDyy5EGncg6aMqDfjy4d3NBh3ZEGLLnw7kCBB03oMObNlx9EEXDy6aE_NBh6bd_Phoy8sqDDuyIECBAgQIEHPryzYceVcgQIEAIxM048u7nlQU6ESwghw1sKytpwVrNcwQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECA';
@@ -147,7 +162,6 @@ const buttons = [
   }
 ];
 // TODO
-// font
 // aspect ratios
 // mosaic rendering (view)
 
@@ -213,12 +227,17 @@ function writePageWithSizeAttributes() {
 
 function onLevelChanged(newLevel) {
   apiInvokedMessage.value = `calling setLevel(Level[${newLevel}])`;
-  t.setLevel(Level[newLevel]);
+  // the watch() function will call setLevel
 }
 
 watch(screenLevel, (newLevel) => {
   t.setLevel(Level[newLevel]);
 });
+
+function onFontChanged() {
+  apiInvokedMessage.value = `calling setFont("${screenFont.value}")`;
+  t.setFont(screenFont.value);
+}
 
 runDemoInVitepress(() => {
   window.addEventListener('keydown', handleKeyPress);
