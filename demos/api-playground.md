@@ -14,18 +14,30 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
   </button>
 </div>
 
+<label>Teletext level
+  <select autocomplete="off" v-model="screenLevel" @change="onLevelChanged(screenLevel)">
+    <option>0</option>
+    <option>1</option>
+    <option>1.5</option>
+    <option>2.5</option>
+  </select>
+</label>
+
 <p style="margin-top: 1rem; margin-bottom: 1rem;">{{ apiInvokedMessage }}</p>
 
 
 <ClientOnly>
 <div id="screen"></div>
+</ClientOnly>
 
 <script setup>
-import { onBeforeUnmount, ref, useTemplateRef } from 'vue';
+import { onBeforeUnmount, ref, useTemplateRef, watch } from 'vue';
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
 import { Attributes, Colour, Teletext, Level } from '@techandsoftware/teletext';
 
 const apiInvokedMessage = ref('// Use the buttons above and the invoked API will appear here');
+const screenLevel = ref('1');
+
 // this is raw page data used with loadPageFromEncodedString()
 const WIKIFAX = 'QIECBAgQV9OvTmw-EDFgwQIKmjry5oIPDkgZMkDFwwYOmDAugQNEDRogaIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIAh0uqYOmDrRowJGjxg80ZNGDIHqaMqDNyy5UCBAgQIECBAgCHS6DSh0odWpSwat0HfU61atYfLux-cezfwy5NOFAgQIECAovXr1q9avWrV65cuXrFq5atWr169evXr169evXr169evXr0CBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgDRuW_ag6b8mHyn5oM2XD068suRBh5dNOPZlQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIAcXDy6aA-nmg6aMqDpo08siDhsw7svRBm5b9qDpoyoOfXcgQYd2RB00ZUG_ds8oMPPpy37t-3Tjw7EG_Fqy4-iDXu399yBB03oNGHli39eSDZpzZVyCT0QaeaDpoyoMmXdzy8-iBAgQIEHDZh3ZeiDTuQdNGVBz37MPJBz88-mXagw7siDbv59ECBAgQbcPPnp7ZUG_Mg6aMqDNv68kHLfj1-UHDZh3ZenNcgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIEEHFv69EDJylQb8yCLh5dNCfmg59eWbDjyoNPNBsw7sixAgQd9PTQg6aMqDll24dO7Jl5IMe_tl5ZciDTuQd8PTLyQYd2RBt649CDfmQRcPLpoT80HDfsw8kHLLn0793NBj39svLLkQIEGncg048q5AgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBBFw8umhBm38tuXIg39svJA0XNUGLTs2ad-5B5y4eXNAgQIEGHPvXIK-npo07kHTRlQZtPLn0QYtOzZp37kHnLh5c1iBAgQbNObKgw8OGXDyy5EGncg6aMqDfjy4d3NBh3ZEGLLnw7kCBB03oMObNlx9EEXDy6aE_NBh6bd_Phoy8sqDDuyIECBAgQIEHPryzYceVcgQIEAIxM048u7nlQU6ESwghw1sKytpwVrNcwQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECA';
 
@@ -130,13 +142,12 @@ const buttons = [
     invokingMsg: 'calling setPageRows(arrayOfRowData) and setLevel(Level[2.5]) // data includes double width and size attributes',
     run() {
       writePageWithSizeAttributes();
-      t.setLevel(Level[2.5]);
+      screenLevel.value = '2.5';
     }
   }
 ];
 // TODO
 // font
-// level
 // aspect ratios
 // mosaic rendering (view)
 
@@ -199,6 +210,16 @@ function writePageWithSizeAttributes() {
   ]);
 }
 
+
+function onLevelChanged(newLevel) {
+  apiInvokedMessage.value = `calling setLevel(Level[${newLevel}])`;
+  t.setLevel(Level[newLevel]);
+}
+
+watch(screenLevel, (newLevel) => {
+  t.setLevel(Level[newLevel]);
+});
+
 runDemoInVitepress(() => {
   window.addEventListener('keydown', handleKeyPress);
 
@@ -229,7 +250,6 @@ onBeforeUnmount(() => {
 });
 
 </script>
-</ClientOnly>
 
 <style>
 .button-row {
