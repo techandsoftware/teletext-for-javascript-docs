@@ -61,7 +61,7 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 <script setup>
 import { onBeforeUnmount, ref, useTemplateRef, watch } from 'vue';
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
-import { Attributes, Colour, Teletext, Level } from '@techandsoftware/teletext';
+import { Teletext, Level } from '@techandsoftware/teletext';
 import { WIKIFAX, PAGE_LEVEL_1, PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT } from './demoPages.js';
 
 // model declarations linked to the the demo UI components
@@ -138,7 +138,7 @@ const buttons = [
     key: 'd',
     invokingMsg: 'calling setPageRows(arrayOfRowData)',
     run() {
-      writePageRowsToScreen()
+      t.setPageRows(PAGE_LEVEL_1)
     }
   },
   {
@@ -164,7 +164,7 @@ const buttons = [
     key: 'z',
     invokingMsg: 'calling setPageRows(arrayOfRowData) and setLevel(Level[2.5]) // data includes double width and size attributes',
     run() {
-      writePageWithSizeAttributes();
+      t.setPageRows(PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT);
       screenLevel.value = '2.5';
     }
   }
@@ -173,19 +173,10 @@ const buttons = [
 // finish writePageRowsToScreen
 // styling of the buttons and selectors
 
-
 // Create a map of button keyboard shortcut to the button index, for keyboard shortcut handling
 const keyToButtonIndex = Object.fromEntries(buttons.map((btn, indexToButton) => [btn.key, indexToButton]));
 const buttonElementRefs = useTemplateRef('buttonEls');
 
-function writePageRowsToScreen() {
-  t.setPageRows(PAGE_LEVEL_1);
-}
-
-// this demoes double width and double size text and mosaics
-function writePageWithSizeAttributes() {
-  t.setPageRows(PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT);
-}
 
 function onLevelChanged() {
   apiInvokedMessage.value = `calling setLevel(Level[${screenLevel.value}])`;
