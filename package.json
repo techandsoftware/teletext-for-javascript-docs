@@ -10,6 +10,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@techandsoftware/teletext": "^1.2.0"
+    "@techandsoftware/teletext": "^1.2.0",
+    "@techandsoftware/teletext-plugin-smooth-mosaic": "^0.1.8"
   }
 }

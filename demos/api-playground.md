@@ -37,10 +37,17 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
   </select>
 </label>
 
-<label>Mosaic rendering
+<label>Mosaic graphics rendering
   <select v-model="mosaicRendering" @change="onMosaicRenderingChanged">
     <option value="classic__font-for-mosaic">Font-rendered mosaics</option>
     <option value="classic__graphic-for-mosaic">Graphic-rendered mosaics</option>
+  </select>
+</label>
+
+<label>Mosaic graphics upscaling
+  <select v-model="mosaicUpscaledSelection" @change="onMosaicUpscaledSelectionChanged">
+    <option>Not upscaled</option>
+    <option>Upscaled</option>
   </select>
 </label>
 
@@ -55,18 +62,20 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 import { onBeforeUnmount, ref, useTemplateRef, watch } from 'vue';
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
 import { Attributes, Colour, Teletext, Level } from '@techandsoftware/teletext';
+import { WIKIFAX, PAGE_LEVEL_1, PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT } from './demoPages.js';
 
+// model declarations linked to the the demo UI components
 const apiInvokedMessage = ref('// Use the buttons above and the invoked API will appear here');
 const screenLevel = ref('1');
 const screenFont = ref('sans-serif');
 const mosaicRendering = ref('classic__font-for-mosaic');
+const mosaicUpscaledSelection = ref('Not upscaled');
+let resetMosaicRenderingToFont = false; // state management if upscaling switched off
 
-// this is raw page data used with loadPageFromEncodedString()
-const WIKIFAX = 'QIECBAgQV9OvTmw-EDFgwQIKmjry5oIPDkgZMkDFwwYOmDAugQNEDRogaIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIAh0uqYOmDrRowJGjxg80ZNGDIHqaMqDNyy5UCBAgQIECBAgCHS6DSh0odWpSwat0HfU61atYfLux-cezfwy5NOFAgQIECAovXr1q9avWrV65cuXrFq5atWr169evXr169evXr169evXr0CBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgDRuW_ag6b8mHyn5oM2XD068suRBh5dNOPZlQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIAcXDy6aA-nmg6aMqDpo08siDhsw7svRBm5b9qDpoyoOfXcgQYd2RB00ZUG_ds8oMPPpy37t-3Tjw7EG_Fqy4-iDXu399yBB03oNGHli39eSDZpzZVyCT0QaeaDpoyoMmXdzy8-iBAgQIEHDZh3ZeiDTuQdNGVBz37MPJBz88-mXagw7siDbv59ECBAgQbcPPnp7ZUG_Mg6aMqDNv68kHLfj1-UHDZh3ZenNcgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIEEHFv69EDJylQb8yCLh5dNCfmg59eWbDjyoNPNBsw7sixAgQd9PTQg6aMqDll24dO7Jl5IMe_tl5ZciDTuQd8PTLyQYd2RBt649CDfmQRcPLpoT80HDfsw8kHLLn0793NBj39svLLkQIEGncg048q5AgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBBFw8umhBm38tuXIg39svJA0XNUGLTs2ad-5B5y4eXNAgQIEGHPvXIK-npo07kHTRlQZtPLn0QYtOzZp37kHnLh5c1iBAgQbNObKgw8OGXDyy5EGncg6aMqDfjy4d3NBh3ZEGLLnw7kCBB03oMObNlx9EEXDy6aE_NBh6bd_Phoy8sqDDuyIECBAgQIEHPryzYceVcgQIEAIxM048u7nlQU6ESwghw1sKytpwVrNcwQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECA';
 
-let t; // will be initialised after onMounted
+let t; // teletext instance - will be initialised after onMounted
 
-// define each button and the corresponding API action.
+// define each demo button and the corresponding API action.
 // reveal, mix and boxed demonstate the events API, which doesn't require access to the teletext instance
 const buttons = [
   {
@@ -124,15 +133,6 @@ const buttons = [
     }
   },
   {
-    id: 'smoothButton',
-    label: 'Toggle mosaic upscaling',
-    key: 'p',
-    invokingMsg: 'TODO // this loads or unloads @techandsoftware/teletext-plugin-smooth-mosaic',
-    run() {
-      // TODO
-    }
-  },
-  {
     id: 'setPageRowsButton',
     label: 'Draw multiple rows',
     key: 'd',
@@ -170,7 +170,6 @@ const buttons = [
   }
 ];
 // TODO
-// smooth mosaic plugin
 // finish writePageRowsToScreen
 // styling of the buttons and selectors
 
@@ -180,59 +179,13 @@ const keyToButtonIndex = Object.fromEntries(buttons.map((btn, indexToButton) => 
 const buttonElementRefs = useTemplateRef('buttonEls');
 
 function writePageRowsToScreen() {
-  t.setPageRows([
-    'This is teletext level 1.5  ETSI 300 706',
-    '',
-    '    40 columns \u{7f} 25 rows \u{7f} 8 colours',
-    '',
-    Attributes.charFromTextColour(Colour.YELLOW) + 'Foreground colours',
-    '',
-    'TODO'
-  ]);
+  t.setPageRows(PAGE_LEVEL_1);
 }
 
 // this demoes double width and double size text and mosaics
 function writePageWithSizeAttributes() {
-  t.setPageRows([
-    Attributes.charFromAttribute(Attributes.DOUBLE_WIDTH) + 'D o u b l e   w i d t h',
-    Attributes.charFromGraphicColour(Colour.WHITE) + Attributes.charFromAttribute(Attributes.DOUBLE_WIDTH) + 'g r a p h i c s' + Attributes.charFromAttribute(Attributes.SEPARATED_GRAPHICS) + '  s e p a r a t e d',
-    Attributes.charFromTextColour(Colour.GREEN) + Attributes.charFromAttribute(Attributes.NEW_BACKGROUND) + Attributes.charFromGraphicColour(Colour.WHITE) + Attributes.charFromAttribute(Attributes.DOUBLE_WIDTH) + 'g r a p h i c s' + Attributes.charFromAttribute(Attributes.SEPARATED_GRAPHICS) + '  s e p a r a t e d',
-    '0123456789012345678901234567890123456789',
-    ' ' + Attributes.charFromAttribute(Attributes.DOUBLE_WIDTH) + 'D' +
-      Attributes.charFromTextColour(Colour.BLUE) +'o' +
-      Attributes.charFromTextColour(Colour.RED) +'u' +
-      Attributes.charFromTextColour(Colour.MAGENTA) +'b' +
-      Attributes.charFromTextColour(Colour.GREEN) +'l' +
-      Attributes.charFromTextColour(Colour.YELLOW) +'e' +
-      Attributes.charFromTextColour(Colour.YELLOW) +' ' +
-      Attributes.charFromTextColour(Colour.CYAN) +'w' +
-      Attributes.charFromTextColour(Colour.YELLOW) +'i' +
-      Attributes.charFromTextColour(Colour.GREEN) +'d' +
-      Attributes.charFromTextColour(Colour.MAGENTA) +'t' +
-      Attributes.charFromTextColour(Colour.RED) +'h',
-    '01234567890123456789',
-    Attributes.charFromTextColour(Colour.RED) + Attributes.charFromAttribute(Attributes.NEW_BACKGROUND) + Attributes.charFromTextColour(Colour.YELLOW) + Attributes.charFromAttribute(Attributes.DOUBLE_WIDTH) + 'R e d' + Attributes.charFromAttribute(Attributes.BLACK_BACKGROUND) + 'B a c k g r o u n d',
-    Attributes.charFromAttribute(Attributes.START_BOX) + Attributes.charFromAttribute(Attributes.START_BOX) + Attributes.charFromAttribute(Attributes.DOUBLE_WIDTH) + 'B o x e d' + Attributes.charFromAttribute(Attributes.END_BOX) + Attributes.charFromAttribute(Attributes.END_BOX) + ' U n b o x e d',
-    Attributes.charFromTextColour(Colour.RED) + Attributes.charFromAttribute(Attributes.NEW_BACKGROUND) + Attributes.charFromTextColour(Colour.YELLOW) + Attributes.charFromAttribute(Attributes.DOUBLE_WIDTH) + '2 * w' + Attributes.charFromAttribute(Attributes.NORMAL_SIZE) + 'Normal' + Attributes.charFromAttribute(Attributes.DOUBLE_HEIGHT) + '2 * h',
-    'row hidden',
-    Attributes.charFromAttribute(Attributes.START_BOX) + Attributes.charFromAttribute(Attributes.START_BOX) + 'Boxed' + Attributes.charFromTextColour(Colour.RED) + Attributes.charFromAttribute(Attributes.NEW_BACKGROUND) + Attributes.charFromTextColour(Colour.YELLOW) + Attributes.charFromAttribute(Attributes.DOUBLE_WIDTH) + '2 * w' + Attributes.charFromAttribute(Attributes.NORMAL_SIZE) + 'Normal' + Attributes.charFromAttribute(Attributes.DOUBLE_HEIGHT) + '2 * h',
-    'row hidden',
-    Attributes.charFromAttribute(Attributes.DOUBLE_SIZE) + 'D o u b l e ' + 
-      Attributes.charFromTextColour(Colour.RED) + ' s i z e' +
-      Attributes.charFromAttribute(Attributes.DOUBLE_HEIGHT) + 'height' +
-      Attributes.charFromAttribute(Attributes.NORMAL_SIZE) + 'normal',
-    'row hidden',
-    Attributes.charFromTextColour(Colour.MAGENTA) + Attributes.charFromAttribute(Attributes.NEW_BACKGROUND) + Attributes.charFromTextColour(Colour.WHITE) + Attributes.charFromAttribute(Attributes.DOUBLE_SIZE) + 'D o u b l e ' + 
-      Attributes.charFromTextColour(Colour.YELLOW) + ' s i z e' +
-      Attributes.charFromAttribute(Attributes.DOUBLE_HEIGHT) + 'height' +
-      Attributes.charFromAttribute(Attributes.NORMAL_SIZE) + 'normal',
-    'row hidden',
-    Attributes.charFromTextColour(Colour.GREEN) + Attributes.charFromAttribute(Attributes.NEW_BACKGROUND) + Attributes.charFromGraphicColour(Colour.BLUE) + Attributes.charFromAttribute(Attributes.DOUBLE_SIZE) + 'g r a p h i c s' + Attributes.charFromAttribute(Attributes.SEPARATED_GRAPHICS) + '  s e p a r a t e d',
-    'row hidden',
-    Attributes.charFromAttribute(Attributes.START_BOX) + Attributes.charFromAttribute(Attributes.START_BOX) + Attributes.charFromAttribute(Attributes.DOUBLE_SIZE) + 'B o x e d' + Attributes.charFromAttribute(Attributes.END_BOX) + Attributes.charFromAttribute(Attributes.END_BOX) + ' U n b o x e d',
-  ]);
+  t.setPageRows(PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT);
 }
-
 
 function onLevelChanged() {
   apiInvokedMessage.value = `calling setLevel(Level[${screenLevel.value}])`;
@@ -251,7 +204,56 @@ function onFontChanged() {
 function onMosaicRenderingChanged() {
   apiInvokedMessage.value = `calling setView("${mosaicRendering.value}")`;
   t.setView(mosaicRendering.value);
+
+  // as setView unlads the mosaic plugin, keep the demo UI state correct
+  if (mosaicUpscaledSelection.value == 'Upscaled') {
+    mosaicUpscaledSelection.value = 'Not upscaled';
+  }
 }
+
+async function onMosaicUpscaledSelectionChanged() {
+  const isUpscaled = mosaicUpscaledSelection.value === 'Upscaled';
+
+  if (isUpscaled) {
+    await loadSmoothMosaic();
+  } else {
+    unloadSmoothMosaic();
+  }
+}
+
+async function loadSmoothMosaic() {
+  ensureGraphicMosaicRendering();
+
+  apiInvokedMessage.value = 'importing @techandsoftware/teletext-plugin-smooth-mosaic and calling registerViewPlugin(plugin) // requires graphic rendering of mosaics'
+
+  try {
+    const { SmoothMosaicPlugin } = await import('@techandsoftware/teletext-plugin-smooth-mosaic');
+    t.registerViewPlugin(SmoothMosaicPlugin);
+  } catch (e) {
+    apiInvokedMessage.value = '// Error - failed to import the plugin: ' + e.message;
+  }
+}
+
+function unloadSmoothMosaic() {
+  if (resetMosaicRenderingToFont) {
+    mosaicRendering.value = 'classic__font-for-mosaic';
+    resetMosaicRenderingToFont = false;
+  }
+
+  apiInvokedMessage.value = `calling setView("${mosaicRendering.value}") // setting the view unloads the plugin`;
+  t.setView(mosaicRendering.value);
+}
+
+// this is used when loading/unloading the smooth mosaic plugin to restore the prior state of mosaic rendering
+function ensureGraphicMosaicRendering() {
+  if (mosaicRendering.value === 'classic__font-for-mosaic') {
+    mosaicRendering.value = 'classic__graphic-for-mosaic';
+    resetMosaicRenderingToFont = true;
+  } else {
+    resetMosaicRenderingToFont = false;
+  }
+}
+
 
 runDemoInVitepress(() => {
   window.addEventListener('keydown', handleKeyPress);
