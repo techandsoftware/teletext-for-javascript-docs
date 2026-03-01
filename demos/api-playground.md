@@ -37,6 +37,13 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
   </select>
 </label>
 
+<label>Mosaic rendering
+  <select v-model="mosaicRendering" @change="onMosaicRenderingChanged">
+    <option value="classic__font-for-mosaic">Font-rendered mosaics</option>
+    <option value="classic__graphic-for-mosaic">Graphic-rendered mosaics</option>
+  </select>
+</label>
+
 <p style="margin-top: 1rem; margin-bottom: 1rem;">{{ apiInvokedMessage }}</p>
 
 
@@ -52,6 +59,7 @@ import { Attributes, Colour, Teletext, Level } from '@techandsoftware/teletext';
 const apiInvokedMessage = ref('// Use the buttons above and the invoked API will appear here');
 const screenLevel = ref('1');
 const screenFont = ref('sans-serif');
+const mosaicRendering = ref('classic__font-for-mosaic');
 
 // this is raw page data used with loadPageFromEncodedString()
 const WIKIFAX = 'QIECBAgQV9OvTmw-EDFgwQIKmjry5oIPDkgZMkDFwwYOmDAugQNEDRogaIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIAh0uqYOmDrRowJGjxg80ZNGDIHqaMqDNyy5UCBAgQIECBAgCHS6DSh0odWpSwat0HfU61atYfLux-cezfwy5NOFAgQIECAovXr1q9avWrV65cuXrFq5atWr169evXr169evXr169evXr0CBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgDRuW_ag6b8mHyn5oM2XD068suRBh5dNOPZlQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIAcXDy6aA-nmg6aMqDpo08siDhsw7svRBm5b9qDpoyoOfXcgQYd2RB00ZUG_ds8oMPPpy37t-3Tjw7EG_Fqy4-iDXu399yBB03oNGHli39eSDZpzZVyCT0QaeaDpoyoMmXdzy8-iBAgQIEHDZh3ZeiDTuQdNGVBz37MPJBz88-mXagw7siDbv59ECBAgQbcPPnp7ZUG_Mg6aMqDNv68kHLfj1-UHDZh3ZenNcgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIEEHFv69EDJylQb8yCLh5dNCfmg59eWbDjyoNPNBsw7sixAgQd9PTQg6aMqDll24dO7Jl5IMe_tl5ZciDTuQd8PTLyQYd2RBt649CDfmQRcPLpoT80HDfsw8kHLLn0793NBj39svLLkQIEGncg048q5AgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBBFw8umhBm38tuXIg39svJA0XNUGLTs2ad-5B5y4eXNAgQIEGHPvXIK-npo07kHTRlQZtPLn0QYtOzZp37kHnLh5c1iBAgQbNObKgw8OGXDyy5EGncg6aMqDfjy4d3NBh3ZEGLLnw7kCBB03oMObNlx9EEXDy6aE_NBh6bd_Phoy8sqDDuyIECBAgQIEHPryzYceVcgQIEAIxM048u7nlQU6ESwghw1sKytpwVrNcwQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECBAgQIECA';
@@ -162,8 +170,9 @@ const buttons = [
   }
 ];
 // TODO
-// aspect ratios
-// mosaic rendering (view)
+// smooth mosaic plugin
+// finish writePageRowsToScreen
+// styling of the buttons and selectors
 
 
 // Create a map of button keyboard shortcut to the button index, for keyboard shortcut handling
@@ -239,6 +248,11 @@ function onFontChanged() {
   t.setFont(screenFont.value);
 }
 
+function onMosaicRenderingChanged() {
+  apiInvokedMessage.value = `calling setView("${mosaicRendering.value}")`;
+  t.setView(mosaicRendering.value);
+}
+
 runDemoInVitepress(() => {
   window.addEventListener('keydown', handleKeyPress);
 
@@ -260,7 +274,7 @@ function handleKeyPress(e) {
   if (idx === undefined) return;
 
   const btn = buttons[idx]; // button data
-  buttonElementRefs.value[idx].focus(); // focus the button element
+  buttonElementRefs.value[idx].focus({ preventScroll: true }); // focus the button element
   trigger(btn);
 }
 
