@@ -194,13 +194,18 @@ function onFontChanged() {
 
 function onMosaicRenderingChanged() {
   apiInvokedMessage.value = `calling setView("${mosaicRendering.value}")`;
-  t.setView(mosaicRendering.value);
 
-  // as setView unlads the mosaic plugin, keep the demo UI state correct
-  if (mosaicUpscaledSelection.value == 'Upscaled') {
-    mosaicUpscaledSelection.value = 'Not upscaled';
+  // watch() will call setView()
+
+  // as setView unloads the mosaic plugin, keep the demo UI state correct
+  if (mosaicRendering.value == 'classic__font-for-mosaic' && mosaicUpscaledSelection.value == 'Upscaled') {
+    mosaicUpscaledSelection.value = 'Not upscaled'
   }
 }
+
+watch(mosaicRendering, (newVal) => {
+  t.setView(newVal)
+});
 
 async function onMosaicUpscaledSelectionChanged() {
   const isUpscaled = mosaicUpscaledSelection.value === 'Upscaled';
@@ -222,6 +227,7 @@ async function loadSmoothMosaic() {
     t.registerViewPlugin(SmoothMosaicPlugin);
   } catch (e) {
     apiInvokedMessage.value = '// Error - failed to import the plugin: ' + e.message;
+    console.error(e);
   }
 }
 
