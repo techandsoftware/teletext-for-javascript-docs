@@ -268,6 +268,12 @@ function trigger(btn) {
 }
 
 function handleKeyPress(e) {
+  // ignore keypress in some cases
+  if (document.body.classList.contains('DocSearch--active')) return;  // ignore key press if search is open
+  const tag = document.activeElement?.tagName;
+  if (tag == 'SELECT') return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+
   const key = e.key.toLowerCase();
   const idx = keyToButtonIndex[key];
   if (idx === undefined) return;
