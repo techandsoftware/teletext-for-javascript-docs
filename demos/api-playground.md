@@ -4,7 +4,7 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 
 <div class="button-row">
   <button
-    v-for="btn in buttons"
+    v-for="btn in DemoButtons.buttons"
     :key="btn.id"
     type="button"
     @click="trigger(btn)"
@@ -56,7 +56,7 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 import { onBeforeUnmount, ref, useTemplateRef, watch } from 'vue';
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
 import { Teletext, Level } from '@techandsoftware/teletext';
-import { WIKIFAX, PAGE_LEVEL_1, PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT } from './demoPages.js';
+import * as DemoButtons from './buttonsForAPIDemo.js';
 
 // model declarations linked to the the demo UI components
 const apiInvokedMessage = ref('// Use the buttons above and the invoked API will appear here');
@@ -81,106 +81,12 @@ const MOSAIC_RENDER_CONFIG = {
   }
 };
 
-// define each demo button and the corresponding API action.
-// reveal, mix and boxed demonstate the events API, which doesn't require access to the teletext instance
-const buttons = [
-  {
-    id: 'revealButton',
-    label: 'Toggle reveal',
-    key: '?',
-    invokingMsg: 'dispatching Event("ttx.reveal") // we could also use toggleReveal().  No effect if the screen doesn\'t contain concealed characters',
-    run() {
-      window.dispatchEvent(new Event('ttx.reveal'))
-    }
-  },
-  {
-    id: 'mixButton',
-    label: 'Toggle mix mode',
-    key: 'm',
-    invokingMsg: 'dispatching Event("ttx.mix") // we could also use toggleMixMode()',
-    run() {
-      window.dispatchEvent(new Event('ttx.mix'))
-    }
-  },
-  {
-    id: 'boxedButton',
-    label: 'Toggle boxed mode',
-    key: 'b',
-    invokingMsg: 'dispatching Event("ttx.subtitlemode") // we could also use toggleBoxMode().  The screen is blank if it doesn\'t contain boxed characters',
-    run() {
-      window.dispatchEvent(new Event('ttx.subtitlemode'))
-    }
-  },
-  {
-    id: 'gridButton',
-    label: 'Toggle grid',
-    key: 'g',
-    invokingMsg: 'calling toggleGrid()',
-    run() {
-      t.toggleGrid()
-    }
-  },
-  {
-    id: 'clearButton',
-    label: 'Clear screen',
-    key: 'w',
-    invokingMsg: 'calling clearScreen()',
-    run() {
-      t.clearScreen()
-    }
-  },
-  {
-    id: 'loadPageButton',
-    label: 'Load a page encoded in a string',
-    key: 'l',
-    invokingMsg: 'calling loadPageFromEncodedString(data) // data is a string packed from 7-bit bytes',
-    run() {
-      t.loadPageFromEncodedString(WIKIFAX)
-    }
-  },
-  {
-    id: 'setPageRowsButton',
-    label: 'Draw multiple rows',
-    key: 'd',
-    invokingMsg: 'calling setPageRows(arrayOfRowData)',
-    run() {
-      t.setPageRows(PAGE_LEVEL_1)
-    }
-  },
-  {
-    id: 'loadTestPageButton',
-    label: 'Load a built-in test page',
-    key: 't',
-    invokingMsg: 'calling showTestPage()',
-    run() {
-      t.showTestPage()
-    }
-  },
-  {
-    id: 'randomiseButton',
-    label: 'Randomise page',
-    key: 'x',
-    invokingMsg: 'calling showRandomisedPage()',
-    run() {
-      t.showRandomisedPage()
-    }
-  }, {
-    id: 'doubleWidthAndSize',
-    label: 'Show a level 2.5 page containing double width and size characters',
-    key: 'z',
-    invokingMsg: 'calling setPageRows(arrayOfRowData) and setLevel(Level[2.5]) // data includes double width and size attributes',
-    run() {
-      t.setPageRows(PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT);
-      screenLevel.value = '2.5';
-    }
-  }
-];
+
 // TODO
 // finish writePageRowsToScreen
 // styling of the buttons and selectors
 
-// Create a map of button keyboard shortcut to the button index, for keyboard shortcut handling
-const keyToButtonIndex = Object.fromEntries(buttons.map((btn, indexToButton) => [btn.key, indexToButton]));
+
 const buttonElementRefs = useTemplateRef('buttonEls');
 
 
@@ -202,7 +108,7 @@ async function onMosaicRenderingChanged() {
   const render = MOSAIC_RENDER_CONFIG[mosaicRendering.value];
 
   let message = `calling setView("${render.view}")`;
-  if (render.upscaled) message += '; importing @techandsoftware/teletext-plugin-smooth-mosaic; calling registerPlugin(plugin)';
+  if (render.upscaled) message += '; calling registerViewPlugin(SmoothMosaicPlugin)';
   apiInvokedMessage.value = message;
 
   t.setView(render.view);
@@ -221,11 +127,11 @@ async function loadSmoothMosaic() {
   }
 }
 
-
 runDemoInVitepress(() => {
   window.addEventListener('keydown', handleKeyPress);
 
   t = Teletext();
+  DemoButtons.setButtonTeletextInstance(t); // the demo buttons are imported
   t.addTo('#screen');
   t.showTestPage();
 
@@ -245,10 +151,10 @@ function handleKeyPress(e) {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
 
   const key = e.key.toLowerCase();
-  const idx = keyToButtonIndex[key];
+  const idx = DemoButtons.keyToButtonIndex[key];
   if (idx === undefined) return;
 
-  const btn = buttons[idx]; // button data
+  const btn = DemoButtons.buttons[idx]; // button data
   buttonElementRefs.value[idx].focus({ preventScroll: true }); // focus the button element
   trigger(btn);
 }
