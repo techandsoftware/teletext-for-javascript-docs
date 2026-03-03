@@ -39,15 +39,9 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 
 <label>Mosaic graphics rendering
   <select v-model="mosaicRendering" @change="onMosaicRenderingChanged">
-    <option value="classic__font-for-mosaic">Font-rendered mosaics</option>
-    <option value="classic__graphic-for-mosaic">Graphic-rendered mosaics</option>
-  </select>
-</label>
-
-<label>Mosaic graphics upscaling
-  <select v-model="mosaicUpscaledSelection" @change="onMosaicUpscaledSelectionChanged">
-    <option>Not upscaled</option>
-    <option>Upscaled</option>
+    <option value="font">Font-rendered mosaics</option>
+    <option value="graphics">Graphics-rendered mosaics</option>
+    <option value="graphics-upscaled">Graphics-rendered mosaics with upscaling</option>
   </select>
 </label>
 
@@ -68,12 +62,24 @@ import { WIKIFAX, PAGE_LEVEL_1, PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT } from './demo
 const apiInvokedMessage = ref('// Use the buttons above and the invoked API will appear here');
 const screenLevel = ref('1');
 const screenFont = ref('sans-serif');
-const mosaicRendering = ref('classic__font-for-mosaic');
-const mosaicUpscaledSelection = ref('Not upscaled');
-let resetMosaicRenderingToFont = false; // state management if upscaling switched off
-
+const mosaicRendering = ref('font');
 
 let t; // teletext instance - will be initialised after onMounted
+
+const MOSAIC_RENDER_CONFIG = {
+  font: {
+    view: 'classic__font-for-mosaic',
+    upscaled: false
+  },
+  graphics: {
+    view: 'classic__graphic-for-mosaic',
+    upscaled: false
+  },
+  'graphics-upscaled': {
+    view: 'classic__graphic-for-mosaic',
+    upscaled: true
+  }
+};
 
 // define each demo button and the corresponding API action.
 // reveal, mix and boxed demonstate the events API, which doesn't require access to the teletext instance
@@ -192,62 +198,26 @@ function onFontChanged() {
   t.setFont(screenFont.value);
 }
 
-function onMosaicRenderingChanged() {
-  apiInvokedMessage.value = `calling setView("${mosaicRendering.value}")`;
+async function onMosaicRenderingChanged() {
+  const render = MOSAIC_RENDER_CONFIG[mosaicRendering.value];
 
-  // watch() will call setView()
+  let message = `calling setView("${render.view}")`;
+  if (render.upscaled) message += '; importing @techandsoftware/teletext-plugin-smooth-mosaic; calling registerPlugin(plugin)';
+  apiInvokedMessage.value = message;
 
-  // as setView unloads the mosaic plugin, keep the demo UI state correct
-  if (mosaicRendering.value == 'classic__font-for-mosaic' && mosaicUpscaledSelection.value == 'Upscaled') {
-    mosaicUpscaledSelection.value = 'Not upscaled'
-  }
-}
-
-watch(mosaicRendering, (newVal) => {
-  t.setView(newVal)
-});
-
-async function onMosaicUpscaledSelectionChanged() {
-  const isUpscaled = mosaicUpscaledSelection.value === 'Upscaled';
-
-  if (isUpscaled) {
+  t.setView(render.view);
+  if (render.upscaled) {
     await loadSmoothMosaic();
-  } else {
-    unloadSmoothMosaic();
   }
 }
 
 async function loadSmoothMosaic() {
-  ensureGraphicMosaicRendering();
-
-  apiInvokedMessage.value = 'importing @techandsoftware/teletext-plugin-smooth-mosaic and calling registerViewPlugin(plugin) // requires graphic rendering of mosaics'
-
   try {
     const { SmoothMosaicPlugin } = await import('@techandsoftware/teletext-plugin-smooth-mosaic');
     t.registerViewPlugin(SmoothMosaicPlugin);
   } catch (e) {
     apiInvokedMessage.value = '// Error - failed to import the plugin: ' + e.message;
     console.error(e);
-  }
-}
-
-function unloadSmoothMosaic() {
-  if (resetMosaicRenderingToFont) {
-    mosaicRendering.value = 'classic__font-for-mosaic';
-    resetMosaicRenderingToFont = false;
-  }
-
-  apiInvokedMessage.value = `calling setView("${mosaicRendering.value}") // setting the view unloads the plugin`;
-  t.setView(mosaicRendering.value);
-}
-
-// this is used when loading/unloading the smooth mosaic plugin to restore the prior state of mosaic rendering
-function ensureGraphicMosaicRendering() {
-  if (mosaicRendering.value === 'classic__font-for-mosaic') {
-    mosaicRendering.value = 'classic__graphic-for-mosaic';
-    resetMosaicRenderingToFont = true;
-  } else {
-    resetMosaicRenderingToFont = false;
   }
 }
 
