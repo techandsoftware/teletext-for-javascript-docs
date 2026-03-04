@@ -84,11 +84,8 @@ const MOSAIC_RENDER_CONFIG = {
   }
 };
 
-
 // TODO
-// finish writePageRowsToScreen
 // styling of the buttons and selectors
-
 
 const buttonElementRefs = useTemplateRef('buttonEls');
 
@@ -114,7 +111,6 @@ async function onMosaicRenderingChanged() {
   apiInvokedMessage.value = message;
 
   DemoAPIModule.setTheTeletextView(render.view);
-  // t.setView(render.view);
   if (render.upscaled) {
     try {
       await DemoAPIModule.loadTheSmoothMosaicPlugin();

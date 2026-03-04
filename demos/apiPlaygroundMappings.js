@@ -1,4 +1,4 @@
-import { WIKIFAX, PAGE_LEVEL_1, PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT } from './demoPages.js';
+import { WIKIFAX, PAGE_LEVEL_1, PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT, PAGE_OUTPUT_LINES } from './demoPages.js';
 import { Level } from '@techandsoftware/teletext';
 
 // this module maps the api-playground to the actual teletext APIs
@@ -10,7 +10,7 @@ export function setButtonTeletextInstance(teletextInstance) {
 
 // define each demo button and the corresponding API action.
 // reveal, mix and boxed demonstate the events API, which doesn't require access to the teletext instance.
-// the run () method for each button either dispatches the event or calls the teletext instance API
+// the run() method for each button either dispatches the event or calls the teletext instance API
 export const buttons = [
   {
     id: 'revealButton',
@@ -101,6 +101,14 @@ export const buttons = [
       teletext.setPageRows(PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT);
       // screenLevel.value = '2.5' is set in the vue integration code, which will call setLevel(Level[2.5])
     }
+  }, {
+    id: 'outputLines',
+    label: 'Load a test page from Output Lines',
+    key: 'o',
+    invokingMsg: 'calling setPageFromOutputLines(arrayofOutputLines)',
+    run() {
+      teletext.setPageFromOutputLines(PAGE_OUTPUT_LINES);
+    }
   }
 ];
 
@@ -120,6 +128,6 @@ export function setTheTeletextView(newView) {
 }
 
 export async function loadTheSmoothMosaicPlugin() {
-    const { SmoothMosaicPlugin } = await import('@techandsoftware/teletext-plugin-smooth-mosaic');
-    teletext.registerViewPlugin(SmoothMosaicPlugin);
+  const { SmoothMosaicPlugin } = await import('@techandsoftware/teletext-plugin-smooth-mosaic');
+  teletext.registerViewPlugin(SmoothMosaicPlugin);
 }
