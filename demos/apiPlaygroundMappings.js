@@ -1,4 +1,4 @@
-import { WIKIFAX, PAGE_LEVEL_1, PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT, PAGE_OUTPUT_LINES } from './demoPages.js';
+import * as PAGES from './demoPages.js';
 import { Level } from '@techandsoftware/teletext';
 
 // this module maps the api-playground to the actual teletext APIs
@@ -63,7 +63,7 @@ export const buttons = [
     key: 'l',
     invokingMsg: 'calling loadPageFromEncodedString(data) // data is a string packed from 7-bit bytes',
     run() {
-      teletext.loadPageFromEncodedString(WIKIFAX)
+      teletext.loadPageFromEncodedString(PAGES.WIKIFAX)
     }
   },
   {
@@ -72,7 +72,7 @@ export const buttons = [
     key: 'd',
     invokingMsg: 'calling setPageRows(arrayOfRowData)',
     run() {
-      teletext.setPageRows(PAGE_LEVEL_1)
+      teletext.setPageRows(PAGES.PAGE_LEVEL_1)
     }
   },
   {
@@ -98,7 +98,7 @@ export const buttons = [
     key: 'z',
     invokingMsg: 'calling setPageRows(arrayOfRowData) and setLevel(Level[2.5]) // data includes double width and size attributes',
     run() {
-      teletext.setPageRows(PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT);
+      teletext.setPageRows(PAGES.PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT);
       // screenLevel.value = '2.5' is set in the vue integration code, which will call setLevel(Level[2.5])
     }
   }, {
@@ -107,7 +107,7 @@ export const buttons = [
     key: 'o',
     invokingMsg: 'calling setPageFromOutputLines(arrayofOutputLines)',
     run() {
-      teletext.setPageFromOutputLines(PAGE_OUTPUT_LINES);
+      teletext.setPageFromOutputLines(PAGES.PAGE_OUTPUT_LINES);
     }
   }
 ];
