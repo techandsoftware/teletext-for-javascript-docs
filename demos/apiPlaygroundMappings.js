@@ -1,4 +1,7 @@
 import { WIKIFAX, PAGE_LEVEL_1, PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT } from './demoPages.js';
+import { Level } from '@techandsoftware/teletext';
+
+// this module maps the api-playground to the actual teletext APIs
 
 let teletext;
 export function setButtonTeletextInstance(teletextInstance) {
@@ -96,10 +99,27 @@ export const buttons = [
     invokingMsg: 'calling setPageRows(arrayOfRowData) and setLevel(Level[2.5]) // data includes double width and size attributes',
     run() {
       teletext.setPageRows(PAGE_WITH_DOUBLE_WIDTH_AND_HEIGHT);
-      screenLevel.value = '2.5';
+      // screenLevel.value = '2.5' is set in the vue integration code, which will call setLevel(Level[2.5])
     }
   }
 ];
 
 // Create a map of button keyboard shortcut to the button index, for keyboard shortcut handling
 export const keyToButtonIndex = Object.fromEntries(buttons.map((btn, indexToButton) => [btn.key, indexToButton]));
+
+export function setTheTeletextLevel(newLevel) {
+  teletext.setLevel(Level[newLevel]);
+}
+
+export function setTheTeletextFont(newFont) {
+  teletext.setFont(newFont);
+}
+
+export function setTheTeletextView(newView) {
+  teletext.setView(newView);
+}
+
+export async function loadTheSmoothMosaicPlugin() {
+    const { SmoothMosaicPlugin } = await import('@techandsoftware/teletext-plugin-smooth-mosaic');
+    teletext.registerViewPlugin(SmoothMosaicPlugin);
+}

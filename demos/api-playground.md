@@ -4,7 +4,7 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 
 <div class="button-row">
   <button
-    v-for="btn in DemoButtons.buttons"
+    v-for="btn in DemoAPIModule.buttons"
     :key="btn.id"
     type="button"
     @click="trigger(btn)"
@@ -53,10 +53,13 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 </ClientOnly>
 
 <script setup>
+// code here is vue code for the demo UI.
+// for the teletext API calls, see apiPlaygroundMappings.js - this separates it from the vue code here
+
 import { onBeforeUnmount, ref, useTemplateRef, watch } from 'vue';
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
-import { Teletext, Level } from '@techandsoftware/teletext';
-import * as DemoButtons from './buttonsForAPIDemo.js';
+import { Teletext } from '@techandsoftware/teletext';
+import * as DemoAPIModule from './apiPlaygroundMappings.js';
 
 // model declarations linked to the the demo UI components
 const apiInvokedMessage = ref('// Use the buttons above and the invoked API will appear here');
@@ -89,19 +92,18 @@ const MOSAIC_RENDER_CONFIG = {
 
 const buttonElementRefs = useTemplateRef('buttonEls');
 
-
 function onLevelChanged() {
   apiInvokedMessage.value = `calling setLevel(Level[${screenLevel.value}])`;
   // the watch() function will call setLevel
 }
 
 watch(screenLevel, (newLevel) => {
-  t.setLevel(Level[newLevel]);
+  DemoAPIModule.setTheTeletextLevel(newLevel);
 });
 
 function onFontChanged() {
   apiInvokedMessage.value = `calling setFont("${screenFont.value}")`;
-  t.setFont(screenFont.value);
+  DemoAPIModule.setTheTeletextFont(screenFont.value);
 }
 
 async function onMosaicRenderingChanged() {
@@ -111,19 +113,15 @@ async function onMosaicRenderingChanged() {
   if (render.upscaled) message += '; calling registerViewPlugin(SmoothMosaicPlugin)';
   apiInvokedMessage.value = message;
 
-  t.setView(render.view);
+  DemoAPIModule.setTheTeletextView(render.view);
+  // t.setView(render.view);
   if (render.upscaled) {
-    await loadSmoothMosaic();
-  }
-}
-
-async function loadSmoothMosaic() {
-  try {
-    const { SmoothMosaicPlugin } = await import('@techandsoftware/teletext-plugin-smooth-mosaic');
-    t.registerViewPlugin(SmoothMosaicPlugin);
-  } catch (e) {
-    apiInvokedMessage.value = '// Error - failed to import the plugin: ' + e.message;
-    console.error(e);
+    try {
+      await DemoAPIModule.loadTheSmoothMosaicPlugin();
+    } catch (e) {
+      apiInvokedMessage.value = '// Error - failed to import the plugin: ' + e.message;
+      console.error(e);
+    }
   }
 }
 
@@ -131,7 +129,7 @@ runDemoInVitepress(() => {
   window.addEventListener('keydown', handleKeyPress);
 
   t = Teletext();
-  DemoButtons.setButtonTeletextInstance(t); // the demo buttons are imported
+  DemoAPIModule.setButtonTeletextInstance(t); // the demo buttons are imported
   t.addTo('#screen');
   t.showTestPage();
 
@@ -141,6 +139,9 @@ runDemoInVitepress(() => {
 function trigger(btn) {
   apiInvokedMessage.value = btn.invokingMsg;
   btn.run();
+  if (btn.id == 'doubleWidthAndSize') {
+    screenLevel.value = '2.5';
+  }
 }
 
 function handleKeyPress(e) {
@@ -150,11 +151,14 @@ function handleKeyPress(e) {
   if (tag == 'SELECT') return;
   if (e.metaKey || e.ctrlKey || e.altKey) return;
 
+  // find the key to button index
   const key = e.key.toLowerCase();
-  const idx = DemoButtons.keyToButtonIndex[key];
+  const idx = DemoAPIModule.keyToButtonIndex[key];
   if (idx === undefined) return;
 
-  const btn = DemoButtons.buttons[idx]; // button data
+  const btn = DemoAPIModule.buttons[idx]; // button data
+
+  // run the button
   buttonElementRefs.value[idx].focus({ preventScroll: true }); // focus the button element
   trigger(btn);
 }
