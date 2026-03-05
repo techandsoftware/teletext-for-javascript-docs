@@ -51,7 +51,6 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 
 <!--
 TODO
-Improve styling
 change font options
 -->
 
@@ -65,10 +64,10 @@ import { Teletext } from '@techandsoftware/teletext';
 import * as DemoAPIModule from './apiPlaygroundMappings.js';
 
 // model declarations linked to the the demo UI components
-const apiInvokedMessage = ref('// Use the buttons above and the invoked API will appear here');
+const apiInvokedMessage = ref('// Use the buttons below, and the invoked API will appear here');
 const screenLevel = ref('1');
 const screenFont = ref('sans-serif');
-const mosaicRendering = ref('font');
+const mosaicRendering = ref('graphics');
 
 let t; // teletext instance - will be initialised after onMounted
 
@@ -188,10 +187,11 @@ onBeforeUnmount(() => {
   font-size: 10pt;
   cursor: pointer;
   color: var(--vp-c-text);
+  transition: border-color 0.25s;
 }
 
 .button-row button:hover,
-.select-row select:hover {
+.select-row label select:hover {
   border-color: var(--vp-c-brand-1);
 }
 
