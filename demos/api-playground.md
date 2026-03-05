@@ -1,6 +1,41 @@
 # Demo: Screen API playground
 
-This page demoes the teletext screen APIs not already demonstrated. Use the buttons below to invoke each API. Keyboard shortcuts are in brackets.
+This page demoes the teletext screen APIs not already demonstrated. Use the buttons and options below the teletext screen to invoke each API. Keyboard shortcuts are in brackets.
+
+<ClientOnly>
+<div id="screen"></div>
+</ClientOnly>
+
+<p style="margin-top: 1rem; margin-bottom: 1rem;">{{ apiInvokedMessage }}</p>
+
+<div class="select-row">
+  <label>Teletext level
+    <select autocomplete="off" v-model="screenLevel" @change="onLevelChanged">
+      <option>0</option>
+      <option selected>1</option>
+      <option>1.5</option>
+      <option>2.5</option>
+    </select>
+  </label><label>Font
+    <select v-model="screenFont" @change="onFontChanged">
+      <option>sans-serif</option>
+      <option>Bedstead</option> 
+      <option>native</option> 
+      <option>serif</option> 
+      <option>Unscii</option> 
+      <option>Ubuntu</option>
+      <option>Roboto Mono</option>
+      <option>monospace</option> 
+      <option>cursive</option>
+    </select>
+  </label><label>Mosaic graphics rendering
+    <select v-model="mosaicRendering" @change="onMosaicRenderingChanged">
+      <option value="font">Font-rendered mosaics</option>
+      <option value="graphics">Graphics-rendered mosaics</option>
+      <option value="graphics-upscaled">Graphics-rendered mosaics with upscaling</option>
+    </select>
+  </label>
+</div>
 
 <div class="button-row">
   <button
@@ -14,43 +49,11 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
   </button>
 </div>
 
-<label>Teletext level
-  <select autocomplete="off" v-model="screenLevel" @change="onLevelChanged">
-    <option>0</option>
-    <option selected>1</option>
-    <option>1.5</option>
-    <option>2.5</option>
-  </select>
-</label>
-
-<label>Font
-  <select v-model="screenFont" @change="onFontChanged">
-    <option>sans-serif</option>
-    <option>Bedstead</option> 
-    <option>native</option> 
-    <option>serif</option> 
-    <option>Unscii</option> 
-    <option>Ubuntu</option>
-    <option>Roboto Mono</option>
-    <option>monospace</option> 
-    <option>cursive</option>
-  </select>
-</label>
-
-<label>Mosaic graphics rendering
-  <select v-model="mosaicRendering" @change="onMosaicRenderingChanged">
-    <option value="font">Font-rendered mosaics</option>
-    <option value="graphics">Graphics-rendered mosaics</option>
-    <option value="graphics-upscaled">Graphics-rendered mosaics with upscaling</option>
-  </select>
-</label>
-
-<p style="margin-top: 1rem; margin-bottom: 1rem;">{{ apiInvokedMessage }}</p>
-
-
-<ClientOnly>
-<div id="screen"></div>
-</ClientOnly>
+<!--
+TODO
+Improve styling
+change font options
+-->
 
 <script setup>
 // code here is vue code for the demo UI.
@@ -83,9 +86,6 @@ const MOSAIC_RENDER_CONFIG = {
     upscaled: true
   }
 };
-
-// TODO
-// styling of the buttons and selectors
 
 const buttonElementRefs = useTemplateRef('buttonEls');
 
@@ -166,21 +166,41 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-.button-row {
+.button-row,
+.select-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 0.5rem 0.5rem;       /* row-gap column-gap */
   margin-bottom: 0.5rem;
+  align-items: flex-start; /* top-align items */
 }
-.button-row button {
-  flex: 0 0 auto; 
+.button-row {
+  justify-content: space-between;
+}
+
+.button-row button,
+.select-row select {
+  flex: 0 0 auto;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   border: 1px solid var(--vp-c-border);
   background-color: var(--vp-c-bg-soft);
+  font-size: 10pt;
   cursor: pointer;
+  color: var(--vp-c-text);
 }
-.button-row button:hover {
-  background-color: var(--vp-c-bg-emphasis);
+
+.button-row button:hover,
+.select-row select:hover {
+  border-color: var(--vp-c-brand-1);
 }
+
+.select-row label {
+  font-size: 10pt;
+  display: block;
+}
+.select-row label select {
+  margin-left: 0.5rem;
+}
+
 </style>
