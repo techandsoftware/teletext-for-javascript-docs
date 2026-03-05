@@ -18,15 +18,21 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
     </select>
   </label><label>Font
     <select v-model="screenFont" @change="onFontChanged">
-      <option>sans-serif</option>
-      <option>Bedstead</option> 
-      <option>native</option> 
-      <option>serif</option> 
-      <option>Unscii</option> 
-      <option>Ubuntu</option>
-      <option>Roboto Mono</option>
-      <option>monospace</option> 
-      <option>cursive</option>
+      <optgroup name="Named fonts">
+        <option value="'Atkinson Hyperlegible Mono', monospace">Atkinson Hyperlegible Mono</option>
+        <option value="Bedstead, monospace">Bedstead (retro font)</option> 
+        <option value="Cousine, monospace">Cousine</option>
+        <option value="Unscii, monospace">Unscii (retro font)</option>
+      </optgroup>
+      <optgroup name="Font families">
+        <option>cursive</option>
+        <option>fantasy</option>
+        <option>monospace</option> 
+        <option>native</option> 
+        <option>sans-serif</option>
+        <option>serif</option> 
+        <option>ui-monospace</option>
+      </optgroup>
     </select>
   </label><label>Mosaic graphics rendering
     <select v-model="mosaicRendering" @change="onMosaicRenderingChanged">
@@ -49,11 +55,6 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
   </button>
 </div>
 
-<!--
-TODO
-change font options
--->
-
 <script setup>
 // code here is vue code for the demo UI.
 // for the teletext API calls, see apiPlaygroundMappings.js - this separates it from the vue code here
@@ -61,13 +62,14 @@ change font options
 import { onBeforeUnmount, ref, useTemplateRef, watch } from 'vue';
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
 import { Teletext } from '@techandsoftware/teletext';
-import * as DemoAPIModule from './apiPlaygroundMappings.js';
+import * as DemoAPIModule from './apiPlaygroundMappings.js'; // teletext API calls are in this module
 
 // model declarations linked to the the demo UI components
 const apiInvokedMessage = ref('// Use the buttons below, and the invoked API will appear here');
-const screenLevel = ref('1');
-const screenFont = ref('sans-serif');
-const mosaicRendering = ref('graphics');
+const screenFont = ref("'Atkinson Hyperlegible Mono', monospace");
+// the following refs are defaults for a new teletext instance
+const screenLevel = ref('1'); // teletext level 1
+const mosaicRendering = ref('graphics'); // use graphics for rendering mosaics
 
 let t; // teletext instance - will be initialised after onMounted
 
@@ -125,6 +127,7 @@ runDemoInVitepress(() => {
 
   t = Teletext();
   DemoAPIModule.setButtonTeletextInstance(t); // the demo buttons are imported
+  t.setFont(screenFont.value); // override the default font
   t.addTo('#screen');
   t.showTestPage();
 

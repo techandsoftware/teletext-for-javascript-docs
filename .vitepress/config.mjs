@@ -9,14 +9,14 @@ export default defineConfig({
       'link',
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Ubuntu&display=swap'
+        href: 'https://fonts.googleapis.com/css2?family=Cousine:wght@700&display=swap'
       }
     ],
     [
       'link',
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap'
+        href: 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@700&display=swap'
       }
     ]
   ],
