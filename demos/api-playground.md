@@ -5,7 +5,7 @@ aside: false
 
 This page demoes the teletext screen APIs not already demonstrated. Use the buttons and options below (or at the side) of the teletext screen to invoke each API. Keyboard shortcuts are in brackets.
 
-<div class="outer-layout">
+<div id="playground-outer-layout">
 <div class="demo-main">
 
   <ClientOnly>
@@ -64,7 +64,7 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
   </button>
 </div>
 </div> <!-- controls -->
-</div> <!-- outer-layout -->
+</div> <!-- playground-outer-layout -->
 
 <script setup>
 // The UI code for the demo is using vue as it's integrated with vitepress.  For your own code, you can call the teletext API however you like.
@@ -181,71 +181,80 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-
-/* default layout is top to bottom */
-.outer-layout {
+/* default top-to-bottom layout */
+#playground-outer-layout {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-/* when the screen's wide enough, the demo UI controls are at the side of the screen */
+/* wide screens: controls on the side */
 @media (min-width: 1200px) {
-  .outer-layout {
+
+  #playground-outer-layout {
     flex-direction: row;
     align-items: flex-start;
   }
 
-  .demo-main {
-    flex: 1;
+  #playground-outer-layout .demo-main {
+    flex: 1 1 0;
   }
 
-  .demo-controls {
-    flex: 0 0 auto;         /* size to content */
+  #playground-outer-layout .demo-controls {
+    flex: 1 1 0; /* flex-grow:1, flex-shrink:1, flex-basis:0 */
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     max-width: 500px;
-    min-width: 0;
+    min-width: 0; /* prevents flex overflow */
   }
 }
 
-.button-row,
-.select-row {
+/* rows inside playground */
+#playground-outer-layout .button-row,
+#playground-outer-layout .select-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 0.5rem;       /* row-gap column-gap */
+  gap: 0.5rem; /* row & column gap */
   margin-bottom: 0.5rem;
   align-items: flex-start; /* top-align items */
 }
-.button-row {
+
+/* button-row specific */
+#playground-outer-layout .button-row {
   justify-content: space-between;
 }
 
-.button-row button,
-.select-row select {
+/* common styles for buttons & selects */
+#playground-outer-layout .button-row button,
+#playground-outer-layout .select-row select {
   flex: 0 0 auto;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   border: 1px solid var(--vp-c-border);
   background-color: var(--vp-c-bg);
+  color: var(--vp-c-text);
   font-size: 10pt;
   cursor: pointer;
-  color: var(--vp-c-text);
   transition: border-color 0.25s;
   border-style: outset;
 }
 
-.button-row button:hover,
-.select-row label select:hover {
+/* hover state */
+#playground-outer-layout .button-row button:hover,
+#playground-outer-layout .select-row select:hover {
   border-color: var(--vp-c-brand-1);
 }
 
-.select-row label {
+/* label styling */
+#playground-outer-layout .select-row label {
   font-size: 10pt;
-  display: block;
+  display: flex;
+  align-items: center; /* vertical alignment of text + select */
 }
-.select-row label select {
+
+/* spacing between label text and select */
+#playground-outer-layout .select-row label select {
   margin-left: 0.5rem;
 }
 
