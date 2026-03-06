@@ -3,14 +3,19 @@ aside: false
 ---
 # Demo: Teletext API playground
 
-This page demoes the teletext screen APIs not already demonstrated. Use the buttons and options below the teletext screen to invoke each API. Keyboard shortcuts are in brackets.
+This page demoes the teletext screen APIs not already demonstrated. Use the buttons and options below (or at the side) of the teletext screen to invoke each API. Keyboard shortcuts are in brackets.
 
-<ClientOnly>
-<div id="screen"></div>
-</ClientOnly>
+<div class="outer-layout">
+<div class="demo-main">
 
-<p style="margin-top: 1rem; margin-bottom: 1rem;">{{ apiInvokedMessage }}</p>
+  <ClientOnly>
+  <div id="screen"></div>
+  </ClientOnly>
 
+  <p style="margin-top: 1rem; margin-bottom: 1rem;">{{ apiInvokedMessage }}</p>
+</div>
+
+<div class="demo-controls">
 <div class="select-row">
   <label>Teletext level
     <select autocomplete="off" v-model="screenLevel" @change="onLevelChanged">
@@ -58,6 +63,8 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
     {{ btn.label }} ({{ btn.key }})
   </button>
 </div>
+</div> <!-- controls -->
+</div> <!-- outer-layout -->
 
 <script setup>
 // The UI code for the demo is using vue as it's integrated with vitepress.  For your own code, you can call the teletext API however you like.
@@ -174,6 +181,35 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
+
+/* default layout is top to bottom */
+.outer-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* when the screen's wide enough, the demo UI controls are at the side of the screen */
+@media (min-width: 1200px) {
+  .outer-layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .demo-main {
+    flex: 1;
+  }
+
+  .demo-controls {
+    flex: 0 0 auto;         /* size to content */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 500px;
+    min-width: 0;
+  }
+}
+
 .button-row,
 .select-row {
   display: flex;
