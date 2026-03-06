@@ -25,7 +25,8 @@ export default defineConfig({
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Bitcount+Single&display=swap'
       }
-    ]
+    ],
+    ['script', { src: 'https://scripts.simpleanalyticscdn.com/latest.js', async: '' }]
   ],
   cleanUrls: true,
   sitemap: {
