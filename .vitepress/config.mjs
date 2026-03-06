@@ -18,6 +18,13 @@ export default defineConfig({
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@700&display=swap'
       }
+    ],
+    [
+      'link',
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Bitcount+Single&display=swap'
+      }
     ]
   ],
   cleanUrls: true,

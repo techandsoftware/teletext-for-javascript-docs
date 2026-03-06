@@ -2,6 +2,12 @@
 
 This page demoes the teletext screen APIs not already demonstrated. Use the buttons and options below the teletext screen to invoke each API. Keyboard shortcuts are in brackets.
 
+<!--
+todo
+re-order buttons
+publish
+-->
+
 <ClientOnly>
 <div id="screen"></div>
 </ClientOnly>
@@ -20,7 +26,8 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
     <select v-model="screenFont" @change="onFontChanged">
       <optgroup name="Named fonts">
         <option value="'Atkinson Hyperlegible Mono', monospace">Atkinson Hyperlegible Mono</option>
-        <option value="Bedstead, monospace">Bedstead (retro font)</option> 
+        <option value="Bedstead, monospace">Bedstead (retro font)</option>
+        <option value="'Bitcount Single'">Bitcount Single (pixel font)</option>
         <option value="Cousine, monospace">Cousine</option>
         <option value="Unscii, monospace">Unscii (retro font)</option>
       </optgroup>
