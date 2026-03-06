@@ -2,12 +2,6 @@
 
 This page demoes the teletext screen APIs not already demonstrated. Use the buttons and options below the teletext screen to invoke each API. Keyboard shortcuts are in brackets.
 
-<!--
-todo
-re-order buttons
-publish
--->
-
 <ClientOnly>
 <div id="screen"></div>
 </ClientOnly>
