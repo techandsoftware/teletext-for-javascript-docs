@@ -74,8 +74,8 @@ export default defineConfig({
           { text: 'Graphics', link: '/demos/3-graphics' },
           { text: 'Character sets', link: '/demos/4-character-sets' },
           { text: 'API playground', link: '/demos/api-playground' },
-          { text: 'Animation', link: '/demos/5-animation' },
-          { text: 'Game of Life', link: '/demos/6-life' }
+          { text: 'Animation', link: '/demos/animation' },
+          { text: 'Game of Life', link: '/demos/life' }
         ]
       }, {
         text: "More modules",
