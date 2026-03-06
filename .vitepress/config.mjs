@@ -73,6 +73,7 @@ export default defineConfig({
           { text: 'Base page', link: '/demos/2-base-page' },
           { text: 'Graphics', link: '/demos/3-graphics' },
           { text: 'Character sets', link: '/demos/4-character-sets' },
+          { text: 'API playground', link: '/demos/api-playground' },
           { text: 'Animation', link: '/demos/5-animation' },
           { text: 'Game of Life', link: '/demos/6-life' }
         ]

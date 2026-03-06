@@ -1,4 +1,7 @@
-# Demo: Screen API playground
+---
+aside: false
+---
+# Demo: Teletext API playground
 
 This page demoes the teletext screen APIs not already demonstrated. Use the buttons and options below the teletext screen to invoke each API. Keyboard shortcuts are in brackets.
 
@@ -57,17 +60,19 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
 </div>
 
 <script setup>
-// code here is vue code for the demo UI.
-// for the teletext API calls, see apiPlaygroundMappings.js - this separates it from the vue code here
+// The UI code for the demo is using vue as it's integrated with vitepress.  For your own code, you can call the teletext API however you like.
+// For the teletext API calls, see apiPlaygroundMappings.js - this separates it from the vue code here
+
+import * as DemoAPIModule from './apiPlaygroundMappings.js'; // teletext API calls are in this module
+import { Teletext } from '@techandsoftware/teletext';
 
 import { onBeforeUnmount, ref, useTemplateRef, watch } from 'vue';
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
-import { Teletext } from '@techandsoftware/teletext';
-import * as DemoAPIModule from './apiPlaygroundMappings.js'; // teletext API calls are in this module
 
 // model declarations linked to the the demo UI components
-const apiInvokedMessage = ref('// Use the buttons below, and the invoked API will appear here');
+const apiInvokedMessage = ref('// Use the buttons and options below, and the invoked API will appear here');
 const screenFont = ref("'Atkinson Hyperlegible Mono', monospace");
+
 // the following refs are defaults for a new teletext instance
 const screenLevel = ref('1'); // teletext level 1
 const mosaicRendering = ref('graphics'); // use graphics for rendering mosaics
@@ -187,11 +192,12 @@ onBeforeUnmount(() => {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   border: 1px solid var(--vp-c-border);
-  background-color: var(--vp-c-bg-soft);
+  background-color: var(--vp-c-bg);
   font-size: 10pt;
   cursor: pointer;
   color: var(--vp-c-text);
   transition: border-color 0.25s;
+  border-style: outset;
 }
 
 .button-row button:hover,
