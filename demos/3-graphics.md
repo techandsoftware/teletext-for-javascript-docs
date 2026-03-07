@@ -5,8 +5,8 @@ Plotting pixels on the screen. This uses the block mosaic set, G1. Unicode calls
 <button id="gridButton">Toggle grid</button>
 
 <ClientOnly>
-
-<div id="screen"></div>
+    <div id="screen"></div>
+</ClientOnly>
 
 <script setup>
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
@@ -56,4 +56,3 @@ runDemoInVitepress(() => {
     return () => t.destroy(); // cleanup after unmount in vitepress
 });
 </script>
-</ClientOnly>

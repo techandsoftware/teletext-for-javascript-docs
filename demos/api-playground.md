@@ -211,23 +211,6 @@ onBeforeUnmount(() => {
     max-width: 100%;
   }
 
-  /* common styles for buttons & selects */
-  .button-row button,
-  .select-row select {
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    border: 1px solid var(--vp-c-border);
-    background-color: var(--vp-c-bg);
-    color: var(--vp-c-text);
-    font-size: 10pt;
-    transition: border-color 0.25s;
-    border-style: outset;
-
-    &:hover {
-      border-color: var(--vp-c-brand-1);
-    }
-  }
-
   .select-row label {
     display: inline-flex;
     flex-direction: column;

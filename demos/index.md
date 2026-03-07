@@ -20,10 +20,11 @@ t.showTestPage('ENGINEERING');
 ```
 :::
 
-<button id="mixButton">Toggle mix mode</button> | <button id="boxedButton">Toggle boxed mode</button> | <button id="revealButton">Toggle reveal</button>
+<button id="mixButton">Toggle mix mode</button> <button id="boxedButton">Toggle boxed mode</button>  <button id="revealButton">Toggle reveal</button>
 
 <ClientOnly>
-<div id="screen"></div>
+  <div id="screen"></div>
+</ClientOnly>
 
 <script setup>
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
@@ -36,11 +37,11 @@ runDemoInVitepress(() => {
   t.setDefaultG0Charset('g0_latin__english');
   t.showTestPage('ENGINEERING');
 
+  // vitepress has vue integration, but for most of the demos I'm using pure JS so the demo code is
   document.querySelector('#mixButton').onclick = () => t.toggleMixMode();
   document.querySelector('#boxedButton').onclick = () => t.toggleBoxMode();
   document.querySelector('#revealButton').onclick = () => t.toggleReveal();
 
-  return () => t.destroy(); // cleanup after unmount in vitepress
+  return () => t.destroy(); // cleanup after unmount in vitepress. This is only needed for SPA to clear up global event handlers
 });
 </script>
-</ClientOnly>

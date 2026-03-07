@@ -35,7 +35,8 @@ t.setRow(4, Attributes.charFromGraphicColour(Colour.RED) + '\x28' +
 <button id="revealButton">Reveal</button>
 
 <ClientOnly>
-<div id="screen"></div>
+  <div id="screen"></div>
+</ClientOnly>
 
 <script setup>
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
@@ -116,4 +117,3 @@ runDemoInVitepress(() => {
 });
     
 </script>
-</ClientOnly>

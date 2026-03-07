@@ -12,8 +12,8 @@ The graphic display options swtich between contiguous and separated mosaics. The
 </select>
 
 <ClientOnly>
-
-<div id="screen"></div>
+  <div id="screen"></div>
+</ClientOnly>
 
 <script setup>
 import { runDemoInVitepress } from './runDemoCodeHelper.js';
@@ -169,4 +169,3 @@ class SpinningCube {
 }
 
 </script>
-</ClientOnly>
