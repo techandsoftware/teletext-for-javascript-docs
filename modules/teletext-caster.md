@@ -247,24 +247,6 @@ function castStateChanged() {
   width: 32px;
   height: 32px;
 }
-
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-}
-.button-row button {
-  flex: 0 0 auto; 
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: 1px solid var(--vp-c-border);
-  background-color: var(--vp-c-bg-soft);
-  cursor: pointer;
-}
-.button-row button:hover {
-  background-color: var(--vp-c-bg-emphasis);
-}
 </style>
 
 ## Licensing

@@ -45,21 +45,38 @@ html:not(.dark) .VPHero .heading {
   justify-content: flex-end; /* right align the row */
 }
 
+/* rows of buttons and selects in demos */
+main .button-row,
+main .select-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: flex-start;
+}
 
+main .select-row {
+  column-gap: 0.8rem;
+}
 
+main .button-row {
+  justify-content: space-between;
+}
+
+main label, main select {
+  max-width: 100%;
+}
+
+main .select-row label {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 10pt;
+}
 
 main select:focus {
   outline: 2px solid #66afe9;
   outline-offset: 2px;
-}
-
-/* teletext screen shrinks responsively below the max-width  */
-#screen svg, main svg {
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    display: block;
-    font-weight: bold;
 }
 
 main button,
@@ -78,4 +95,13 @@ main select {
   &:hover {
     border-color: var(--vp-c-brand-1);
   }
+}
+
+/* teletext screen shrinks responsively below the max-width  */
+#screen svg, main svg {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    display: block;
+    font-weight: bold;
 }

@@ -60,8 +60,7 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
     @click="trigger(btn)"
     ref="buttonEls"
   >
-    {{ btn.label }} ({{ btn.key }})
-  </button>
+    {{ btn.label }} ({{ btn.key }})</button>
 </div>
 </div> <!-- controls -->
 </div> <!-- playground-outer-layout -->
@@ -188,36 +187,6 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 1rem;
 
-  /* the buttons and selects in rows */
-  .button-row,
-  .select-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-    align-items: flex-start;
-  }
-
-  .select-row {
-    column-gap: 0.8rem;
-  }
-  
-  /* button-row specific */
-  .button-row {
-    justify-content: space-between;
-  }
-
-  label, select {
-    max-width: 100%;
-  }
-
-  .select-row label {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 10pt;
-  }
-
   /* wide screens  - teletext screen on left, controls on right */
   @media (min-width: 1200px) {
     flex-direction: row;
@@ -234,5 +203,4 @@ onBeforeUnmount(() => {
     }
   }
 }
-
 </style>
