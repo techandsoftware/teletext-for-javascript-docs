@@ -26,14 +26,14 @@ This page demoes the teletext screen APIs not already demonstrated. Use the butt
     </select>
   </label><label>Font
     <select v-model="screenFont" @change="onFontChanged">
-      <optgroup name="Named fonts">
+      <optgroup label="Named fonts">
         <option value="'Atkinson Hyperlegible Mono', monospace">Atkinson Hyperlegible Mono</option>
         <option value="Bedstead, monospace">Bedstead (retro font)</option>
         <option value="'Bitcount Single'">Bitcount Single (pixel font)</option>
         <option value="Cousine, monospace">Cousine</option>
         <option value="Unscii, monospace">Unscii (retro font)</option>
       </optgroup>
-      <optgroup name="Font families">
+      <optgroup label="Font families">
         <option>cursive</option>
         <option>fantasy</option>
         <option>monospace</option> 
@@ -181,81 +181,75 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-/* default top-to-bottom layout */
+/* top to bottom layout by default */
 #playground-outer-layout {
+
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
 
-/* wide screens: controls on the side */
-@media (min-width: 1200px) {
-
-  #playground-outer-layout {
-    flex-direction: row;
+  /* the buttons and selects in rows */
+  .button-row,
+  .select-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
     align-items: flex-start;
   }
 
-  #playground-outer-layout .demo-main {
-    flex: 1 1 0;
+  .select-row {
+    column-gap: 0.8rem;
+  }
+  
+  /* button-row specific */
+  .button-row {
+    justify-content: space-between;
   }
 
-  #playground-outer-layout .demo-controls {
-    flex: 1 1 0; /* flex-grow:1, flex-shrink:1, flex-basis:0 */
-    display: flex;
+  label, select {
+    max-width: 100%;
+  }
+
+  /* common styles for buttons & selects */
+  .button-row button,
+  .select-row select {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--vp-c-border);
+    background-color: var(--vp-c-bg);
+    color: var(--vp-c-text);
+    font-size: 10pt;
+    transition: border-color 0.25s;
+    border-style: outset;
+
+    &:hover {
+      border-color: var(--vp-c-brand-1);
+    }
+  }
+
+  .select-row label {
+    display: inline-flex;
     flex-direction: column;
-    gap: 0.5rem;
-    max-width: 500px;
-    min-width: 0; /* prevents flex overflow */
+    align-items: flex-start;
+    font-size: 10pt;
   }
-}
 
-/* rows inside playground */
-#playground-outer-layout .button-row,
-#playground-outer-layout .select-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem; /* row & column gap */
-  margin-bottom: 0.5rem;
-  align-items: flex-start; /* top-align items */
-}
+  /* wide screens  - teletext screen on left, controls on right */
+  @media (min-width: 1200px) {
+    flex-direction: row;
+    align-items: flex-start;
 
-/* button-row specific */
-#playground-outer-layout .button-row {
-  justify-content: space-between;
-}
+    .demo-main {
+      flex: 1 1 0;
+    }
 
-/* common styles for buttons & selects */
-#playground-outer-layout .button-row button,
-#playground-outer-layout .select-row select {
-  flex: 0 0 auto;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: 1px solid var(--vp-c-border);
-  background-color: var(--vp-c-bg);
-  color: var(--vp-c-text);
-  font-size: 10pt;
-  cursor: pointer;
-  transition: border-color 0.25s;
-  border-style: outset;
-}
-
-/* hover state */
-#playground-outer-layout .button-row button:hover,
-#playground-outer-layout .select-row select:hover {
-  border-color: var(--vp-c-brand-1);
-}
-
-/* label styling */
-#playground-outer-layout .select-row label {
-  font-size: 10pt;
-  display: flex;
-  align-items: center; /* vertical alignment of text + select */
-}
-
-/* spacing between label text and select */
-#playground-outer-layout .select-row label select {
-  margin-left: 0.5rem;
+    .demo-controls {
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }
 
 </style>
