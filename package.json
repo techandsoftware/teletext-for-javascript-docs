@@ -4,13 +4,16 @@
     "vitepress": "^1.6.4"
   },
   "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
   },
   "type": "module",
   "dependencies": {
-    "@techandsoftware/teletext": "^1.2.0",
-    "@techandsoftware/teletext-plugin-smooth-mosaic": "^0.1.8"
+    "@techandsoftware/teletext": "^1.2.1",
+    "@techandsoftware/teletext-plugin-smooth-mosaic": "^0.1.9"
   }
 }
