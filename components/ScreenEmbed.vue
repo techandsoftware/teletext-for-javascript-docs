@@ -1,6 +1,6 @@
 <template>
-  <button @click="openInNewTab" style="padding-bottom: 0.5em">
-    View in new tab ↗
+  <button @click="openInNewTab">
+    View in new tab ↗︎
   </button>
   <div ref="framecontainer" class="screenembed">
     <iframe :src onload="this.focus()" />
@@ -41,6 +41,9 @@ function openInNewTab() {
 </script>
 
 <style scoped>
+button {
+  margin-bottom: 0.5rem;
+}
 .screenembed {
   width: 100%;
   aspect-ratio: 4 / 3;

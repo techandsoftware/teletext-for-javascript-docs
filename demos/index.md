@@ -20,7 +20,9 @@ t.showTestPage('ENGINEERING');
 ```
 :::
 
+<div class="button-row">
 <button id="mixButton">Toggle mix mode</button> <button id="boxedButton">Toggle boxed mode</button>  <button id="revealButton">Toggle reveal</button>
+</div>
 
 <ClientOnly>
   <div id="screen"></div>

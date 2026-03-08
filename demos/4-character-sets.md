@@ -4,6 +4,7 @@
 
 This shows each G0 character set, with character range from 0x20 to 0x7f. Select a set from the drop-down menu, which sets the default G0 set for the whole screen.  Note that ASCII isn't available, although g0_latin is close. The demo is using [`setDefaultG0Charset()`](../teletext-screen-api#setdefaultg0charset-charset-withupdate) to switch sets.  The method also sets the corresponding G2 set, which requires level 1.5. The G2 characters are drawn on top of the base page as enhancements. The methods used are [`setLevel()`](../teletext-screen-api#setlevel-level) to set level 1.5, with [`pos()`](../teletext-screen-api#pos-col-row) and [`putG2()`](../teletext-screen-api#putg2-char) for each character.
 
+<div>
 <label for="g0setselector">G0 set selection</label><br>
 <select style="margin-bottom: 1rem;" id="g0setselector" on>
     <option>g0_latin</option>
@@ -27,7 +28,7 @@ This shows each G0 character set, with character range from 0x20 to 0x7f. Select
     <option>g0_arabic</option>
     <option>g0_hebrew</option>
 </select>
-
+</div>
 
 <ClientOnly>
 <div id="screen"></div>
