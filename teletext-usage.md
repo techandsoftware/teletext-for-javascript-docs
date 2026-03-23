@@ -65,6 +65,8 @@ teletext.setRow(0, 'Hello from node');
 const svg = dom.window.document.querySelector('#teletextscreen').innerHTML;
 ```
 
+If you're not generating SVG (using `getText()` for example), then you don't need to pass in the window object.
+
 ## Drawing text
 
 See also: [base page demo](/demos/2-base-page)

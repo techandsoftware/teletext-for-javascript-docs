@@ -23,6 +23,8 @@ Each set is 7 bit, with up to 96 characters with codes 0x20 to 0x7f.  A descript
 
 To use: See the APIs to write [rows](/teletext-screen-api#write-rows-to-the-base-page) and [bytes](/teletext-screen-api#write-bytes-to-the-base-page) to the base page. [`enhance().putG0()`](/teletext-screen-api#putg0-char-diacriticcode) writes enhancements with or without diacritics. On the base page and enhancements, [`setDefaultG0Charset()`](/teletext-screen-api#setdefaultg0charset-charset-withupdate) sets the G0 set. On the base page only, [`setSecondG0Charset()`](/teletext-screen-api#setsecondg0charset-charset-withupdate) can be used with `Attributes.ESC` to switch between the default and secondary set.
 
+<DemoLink demo="4-character-sets#g0-and-g2"/>
+
 ## G1 "Block Mosaic set"
 
 - Used on base page for block mosaic graphics. (Unicode refers to these as sextants.)
@@ -39,6 +41,8 @@ To use: Use attributes to switch from G0 to G1, e.g. include [`Attributes.charFr
 
 To use: [`enhance().putG2()`](/teletext-screen-api#putg2-char) writes enhancements. [`setDefaultG0Charset()`](/teletext-screen-api#setdefaultg0charset-charset-withupdate) sets the G2 set corresponding with the selected G0 set. [`setG2Charset()`](/teletext-screen-api#setg2charset-charset-withupdate) sets the G2 set independently of the G0 set.
 
+<DemoLink demo="4-character-sets#g0-and-g2"/>
+
 ## G3 "Smooth Mosaics and Line Drawing Set"
 
 - At level 1.5,
@@ -47,6 +51,8 @@ To use: [`enhance().putG2()`](/teletext-screen-api#putg2-char) writes enhancemen
 - At level 2.5, entire set is placeable using enhancements
 
 To use: [`enhance().putG3()`](/teletext-screen-api#putg3-char) writes enhancements.
+
+<DemoLink demo="4-character-sets#g3"/>
 
 ## Additional notes
 

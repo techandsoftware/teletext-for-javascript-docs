@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: © 2025 Rob Hardy
+SPDX-FileCopyrightText: © 2026 Rob Hardy
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -13,12 +13,12 @@ Returns the teletext instance with the API functions below.
 
 The `options` parameter object is optional, with properties:
 
-* `webkitCompat`: boolean (optional)
-   * `true` (default) - the generated SVG is compatible with Safari/Webkit browsers (all browsers on iOS), but it's bigger
-   * `false` - uses SVG2 features which work in most browsers but not Safari or any browser on iOS, as they fail to render the graphics properly ([see this bug](https://bugs.webkit.org/show_bug.cgi?id=182172)), unless you use `setView` to switch the view to `classic__font-for-mosaic` (documented below)
-
 * `dom`: object (optional)
-   * if running in nodejs you need to pass in a window dom object. See [this example](/teletext-usage#for-nodejs) for nodejs
+   * if running in nodejs and generating SVG, you need to pass in a window dom object. See [this example](/teletext-usage#for-nodejs) for nodejs
+
+* `webkitCompat`: boolean (optional)
+   * `false` (default)
+   * `true` - this activates a legacy workaround for Safari/webkit browsers prior to mid-2023, due to [this bug](https://bugs.webkit.org/show_bug.cgi?id=182172). The generated SVG is compatible with webkit prior to the bug fix, but it's bigger. It's unlikely you'll need this.
 
 Call the following methods on the teletext instance to draw on the screen and control the rendering.
 
@@ -26,11 +26,15 @@ Call the following methods on the teletext instance to draw on the screen and co
 Single page web apps should call [`destroy()`](#destroy) when unmounting, for clean-up tasks.
 :::
 
+<DemoLink demo="./"/>
+
 ### addTo(selector)
 
 `selector` is a DOM selector string, e.g. `#teletextscreen` to match a `<div id="teletextscreen"></div>` element.
 
 This adds a teletext screen to the DOM element referred to by the selector, which will create an inline SVG document to render the screen. If you want to export a snapshot of the SVG, you can access it with `document.querySelector(selector).innerHTML`. It's necessary to call `addTo()` to make the screen visible.
+
+<DemoLink demo="./"/>
 
 ### setLevel(level)
 
@@ -41,6 +45,9 @@ import { Level } from '@techandsoftware/teletext'
 ```
 
 Values are `Level[0]`, `Level[1]`, `Level[1.5]`, `Level[2.5]`.  Level 0 isn't a real teletext level, but uses a subset of the spacing attributes roughly corresponding to Ceefax test pages from 1975 (no background colours, double height, reveal, boxed or held mosaic).  Levels 1 to 2.5 are from the ETSI spec. The default is Level 1.
+
+<DemoLink demo="api-playground"/>
+
 
 ### remove()
 
@@ -81,6 +88,8 @@ There are four G2 sets available. The G2 set which is selected has the same scri
 
 For reference, the code charts are on [Wikipedia](https://en.wikipedia.org/wiki/Teletext_character_set), however the character codepoints there don't necessarily match the tables in this codebase (see [`characterEncodings.json`](https://bitbucket.org/rahardy/teletext/src/master/lib/data/characterEncodings.json) in the source).  The control codes for characters 0 to 1f are used for [attributes](/teletext-attributes).
 
+<DemoLink demo="4-character-sets"/>
+
 ### setSecondG0Charset(charset, withUpdate)
 
 Sets the second G0 character set.  This is used with `Attributes.ESC` (character code 1b) to switch between the default G0 character set and the second G0 character set. The parameters are the same as for `setDefaultG0Charset`. There is no change to the G2 set.
@@ -98,6 +107,8 @@ Sets the G2 character set. This can be called to override the G2 set that was se
 
 `withUpdate` is an optional boolean. When `true` the display is updated immediately. Defaults to `false`.
 
+<DemoLink demo="4-character-sets"/>
+
 ## Write rows to the base page
 
 ### setPageRows([strings])
@@ -106,9 +117,13 @@ Display the content in the strings. Array of up to 25 elements. Each element is 
 
 Display attributes such as text or graphic colour, flashing and other features are set with control codes defined by ETSI EN 300 706. These can be embedded directly in the strings or are exposed via the [Attributes](/teletext-attributes) class to generate them. 
 
+<DemoLink demo="api-playground"/>
+
 ### setRow(rowNum, string)
 
 Display the string on the row number. `rowNum` is between 0 and 24. The string is up to 40 characters.  Display [attributes](/teletext-attributes) in the string can be used.
+
+<DemoLink demo="2-base-page"/>
 
 ### loadPageFromEncodedString(base64input, header)
 
@@ -116,9 +131,13 @@ Displays a page from the `base64input`.  The input is a base64-encoded string of
 
 `header` is optional. When supplied, it replaces row 0 on the displayed page. It's a string of 32 characters. It can use the Output Line format but without the initial `OL,rowNum,`. See [`setPageFromOutputLines`](#setpagefromoutputlines-lines-header) for the format.
 
+<DemoLink demo="api-playground"/>
+
 ### setRowFromOutputLine(rowNum, string)
 
 This is a wrapper around `setRow` which accepts the Output Line format used in .tti files, but without the initial `OL,rowNum,` at the beginning. It displays the string on the row number after decoding the Output Line. See [`setPageFromOutputLines`](#setpagefromoutputlines-lines-header) for the format. `rowNum` is between 0 and 24.
+
+<DemoLink demo="api-playground"/>
 
 ### setPageFromOutputLines([lines], header)
 
@@ -132,6 +151,8 @@ In this:
 * `line` is the string to display. Attribute characters (character codes less than 0x20) are represented in three ways: 1) As they are with no translation, or 2) They have 0x80 added to translate them to characters with codes 128-159, or 3) they are replaced by escape (character 0x1b) then the character with 0x40 added.
 
 `header` is optional. When present, it's a string of 32 characters, which have the same encoding as the Output Lines but without the initial `OL,rowNum,` . This is used as the header row and is used instead of Output Line 0 in the provided `lines`. When not provided, the row 0 in the `lines` is used if there is one. 
+
+<DemoLink demo="api-playground"/>
 
 ## Write bytes to the base page
 
@@ -160,6 +181,8 @@ Plots a pixel. The coordinates are from (0, 0) to (79, 74). The origin is the to
 This generates a 2x3 mosaic (sextant) character corresponding to the character cell in the page model that you're plotting to. Existing mosaics in the cell are modified to plot the pixel. If characters with codes 0x0 to 0x1f are in the target cell, these are unchanged so that spacing atributes are preserved, and the plot has no effect. If characters with codes 0x40 to 0x5f are at the character position you're plotting to, this is cleared first.
 
 To use this, you will first need to set graphics mode for the row by writing a graphic spacing attribute, for example by using [`writeByte()`](#writebyte-colnum-rownum-byte-withupdate) and [`Attributes.charFromGraphicColour()`](/teletext-attributes#attributes-charfromgraphiccolour-colour).
+
+<DemoLink demo="3-graphics"/>
 
 ### plotPoints(graphicColNum, graphicRowNum, numPixelsPerRow, pixelsArray)
 
@@ -191,6 +214,8 @@ Toggles boxed display mode on or off. See also the [`ttx.subtitlemode`](/teletex
 
 Clears the screen.  `withUpdate` is an optional boolean, default is `true`. When `true`, the page is cleared immediately.  When `false` the page model is cleared but the display is not updated.  In that case, the screen is cleared the next time you call a function which updates the display, such as [`setPageRows()`](#setpagerows-strings).
 
+<DemoLink demo="api-playground"/>
+
 ### updateDisplay()
 
 Force an update of the display. This is useful in certain cases where the page model has been updated and the display is not automatically updated, for example with [`plot()`](#plot-graphiccolnum-graphicrownum).
@@ -204,13 +229,19 @@ Without the `pageName`, this rotates through the pages every time this is called
 
 The test pages were kindly supplied by https://teletextarchive.com/
 
+<DemoLink demo="api-playground"/>
+
 ### toggleGrid()
 
 Show or a hide a grid. The grid shows the rows and cells.
 
+<DemoLink demo="3-graphics"/>
+
 ### showRandomisedPage()
 
 Randomises the display data. This doesn't have a practical use but emulates a dodgy TV signal and creates a nice mash of display attributes.
+
+<DemoLink demo="api-playground"/>
 
 ## Enhancements
 
@@ -227,6 +258,8 @@ The methods are:
 ### pos(col, row)
 
 Updates the *position* to the `col` and `row`.  The *position* is only updated when this function is called.  The initial position is 0, 0, which is the top left.
+
+<DemoLink demo="4-character-sets"/>
 
 ### putG0(char, diacriticCode)
 
@@ -254,6 +287,8 @@ Requires level 1.5 or 2.5.  Writes a character from the primary G0 set at the *p
 | 14              | ◌&#x328;  |
 | 15              | ◌&#x30c;  |
 
+<DemoLink demo="4-character-sets"/>
+
 ### putG1(char)
 
 Requires level 2.5. Writes a block mosaic character from the G1 set at the *position*. The mosaic's contiguous or separated state from the base page is inherited.
@@ -266,6 +301,8 @@ Requires level 1.5 or 2.5.  Writes a character from the current G2 set at the *p
 
 `char` is a character with a code between 0x20 and 0x7f.
 
+<DemoLink demo="4-character-sets"/>
+
 ### putG3(char)
 
 Requires level 1.5 or 2.5.  Writes a smooth mosaic or line drawing character from the G3 set at the *position*.  Level 1.5 supports 4 characters. Level 2.5 supports the entire set.
@@ -276,6 +313,8 @@ Character 5f isn't supported, which is intended to show the level 2.5 row backgr
 
 The G3 characters are written using the codepoints defined by Unicode for Symbols for Legacy Computing.  You can use the Unscii font to display these correctly. Put Unscii in a `fonts` subdirectory relative to the page containing the teletext display div.  Unscii is available with [`npm install @techandsoftware/teletext-fonts`](https://www.npmjs.com/package/@techandsoftware/teletext-fonts) or from http://viznut.fi/unscii/ .
 
+<DemoLink demo="4-character-sets"/>
+
 ### putAt()
 
 Requires level 1.5 or 2.5. Writes a `@` character at the *position*.  This is needed because `@` is missing from most G0 and G2 sets, and the teletext spec has special provision for it.
@@ -283,6 +322,8 @@ Requires level 1.5 or 2.5. Writes a `@` character at the *position*.  This is ne
 ### end()
 
 Finish adding enhancements, and the display is updated.
+
+<DemoLink demo="4-character-sets"/>
 
 ## Display and rendering
 
@@ -312,6 +353,8 @@ Normal values for `font` include `serif`, `sans-serif`, `monospace` and specific
 
 If `g0_arabic` was set as the G0 character set, the characters are rendered differently so that they're cursive. Whether this works correctly depends on your font.
 
+<DemoLink demo="api-playground"/>
+
 ### setView(view)
 
 `view` is a string with one of these values:
@@ -321,6 +364,8 @@ If `g0_arabic` was set as the G0 character set, the characters are rendered diff
 When using `classic__font-for-mosaic`, the contiguous mosaic characters use codepoints defined in Unicode [Symbols for Legacy Computing](https://en.wikipedia.org/wiki/Symbols_for_Legacy_Computing). The separated mosaic characters use private use codepoints because the separated mosaics are missing from Unicode's legacy computing block. (Actually, they have since been added in Unicode 16, and the package needs to be updated to the new codepoints.) The mosaic characters use the Unscii font. For this to work, you need to supply Unscii in a `fonts` subdirectory relative to the page containing the teletext display div.  Unscii is available with `npm install @techandsoftware/teletext-fonts` or downloadable from http://viznut.fi/unscii/ .
 
 Using the font will result in a smaller SVG.  If you export the SVG from the DOM then you will need to ensure the Unscii font is available so that the SVG can be viewed properly in isolation. Because of issues with getting the edges of the mosaics to join up without gaps, the font size is slightly bigger than it should be. Using SVG graphics for the mosaics is more portable, and the mosaics are more precisely positioned.
+
+<DemoLink demo="api-playground"/>
 
 ## Miscellaneous APIs
 
@@ -334,7 +379,15 @@ Gets the raw bytes used in the base page of the internal model. The response is 
 
 ### getScreenImage()
 
-Gets a static image of the screen. This returns SVG markup.
+Gets a static image of the screen. This returns SVG markup.  Currently, this is the same as `document.querySelector(yourselector).innerHTML` .
+
+### getText(withGraphics)
+
+Returns a string, a plain text rendering of the screen. As it's plain text, there's no colour or attributes like flashing. Like the SVG rendering, it handles 'burned through' G0 characters when mosaic graphics are enabled, and enhancement characters on the base page. This can be called from node, and the teletext instance doesn't require the window DOM object.
+
+`withGraphics` is a boolean:
+* `false` (default) - returns text characters (G0 and G2), and no mosaic or G3 characters
+* `true` - returns text as well as mosaics and G3 characters.  The contiguous mosaics and G3 characters use Unicode 13 codepoints in the legacy computing block. Separated block mosaics use codepoints from the private use area used by Unscii. (Unicode 16 has since added the separated mosaics, but it's not implemented here yet.)
 
 ### destroy()
 

@@ -13,3 +13,5 @@ You can send an event like this in your application:
 ```javascript
 window.dispatchEvent(new Event('ttx.reveal'));
 ```
+
+<DemoLink demo="api-playground"/>
