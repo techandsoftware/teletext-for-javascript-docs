@@ -373,6 +373,8 @@ Using the font will result in a smaller SVG.  If you export the SVG from the DOM
 
 Pass in a plugin class. The plugin can hook in and override parts of the page rendering using a plugin interface.  The plugin interface isn't documented yet.
 
+<DemoLink demo="api-playground"/>. Set the 'mosaic graphics rendering' to 'graphics-rendered mosaics with upscaling'.
+
 ### getBytes()
 
 Gets the raw bytes used in the base page of the internal model. The response is a `Uint8Array` with 1000 elements. As each teletext byte is 7-bit, the element values will be between 0 and 127 inclusive.

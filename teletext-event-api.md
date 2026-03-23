@@ -14,4 +14,4 @@ You can send an event like this in your application:
 window.dispatchEvent(new Event('ttx.reveal'));
 ```
 
-<DemoLink demo="api-playground"/>
+<DemoLink demo="./"/>
