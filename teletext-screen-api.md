@@ -86,7 +86,7 @@ Sets the default G0 character set, and the G2 set with the script matching the G
 
 There are four G2 sets available. The G2 set which is selected has the same script passed in as the `charset` (for example, if `charset` is `g0_greek` then G2 is set to `g2_greek`.) Hebrew doesn't have a corresponding G2 set, and G2 is set to `g2_arabic`.
 
-For reference, the code charts are on [Wikipedia](https://en.wikipedia.org/wiki/Teletext_character_set), however the character codepoints there don't necessarily match the tables in this codebase (see [`characterEncodings.json`](https://bitbucket.org/rahardy/teletext/src/master/lib/data/characterEncodings.json) in the source).  The control codes for characters 0 to 1f are used for [attributes](/teletext-attributes).
+For reference, the code charts are on [Wikipedia](https://en.wikipedia.org/wiki/Teletext_character_set), however the character codepoints there don't necessarily match the tables in this codebase (see [`characterEncodings.json`](https://github.com/techandsoftware/teletext/blob/HEAD/lib/data/characterEncodings.json) in the source).  The control codes for characters 0 to 1f are used for [attributes](/teletext-attributes).
 
 <DemoLink demo="4-character-sets"/>
 

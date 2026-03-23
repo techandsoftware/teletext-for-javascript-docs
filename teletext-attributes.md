@@ -60,4 +60,4 @@ teletext.setPageRow(0, Attributes.charFromTextColour(Colour.YELLOW) +
 
 The attributes take up 3 spaces before the text.
 
-If you prefer to use the control codes directly, check the source of [Attributes.js](https://bitbucket.org/rahardy/teletext/src/master/lib/Attributes.js) or the teletext spec to get the control code values. Double height, for instance, is code 13 (or d in hexadecimal), so you could use strings like `"\x0d"`, `"\u{d}"`, `String.fromCharCode(13)`.
+If you prefer to use the control codes directly, check the source of [Attributes.js](https://github.com/techandsoftware/teletext/blob/HEAD/lib/Attributes.js) or the teletext spec to get the control code values. Double height, for instance, is code 13 (or d in hexadecimal), so you could use strings like `"\x0d"`, `"\u{d}"`, `String.fromCharCode(13)`.
